@@ -3,6 +3,7 @@
  */
 const fs = require('fs').promises;
 const Database = require('sqlite-async');
+const axios = require('axios');
 
 let db;
 let routes;
@@ -90,10 +91,17 @@ const getAllCategories = tableName => async () => {
     return db.all(query);
 };
 
+async function sendToElasticSearch(json) {
+    const endpoint = 'http://3.35.135.122:9200/losts/_doc/';
+    return await axios
+        .post(endpoint, json);
+}
+
 module.exports = {
     searchPoliceDB: getSearchFunction('losts_police'),
     searchSeoulDB: getSearchFunction('losts_seoul'),
     getPoliceDBCategories: getAllCategories('losts_police'),
     getSeoulDBCategories: getAllCategories('losts_seoul'),
-    searchBusRoutel,
+    searchBusRoute,
+    sendToElasticSearch
 };

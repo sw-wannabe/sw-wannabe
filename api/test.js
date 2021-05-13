@@ -30,4 +30,16 @@ setTimeout(async () => {
     list = await api.getSeoulDBCategories();
     console.log(list);
 
+    // json들의 배열을 elasticsearch에 집어넣음.
+    let data = await api.searchPoliceDB({});
+    let result = await Promise.all(data.map(async data => {
+        const { id, ...remain } = data;
+        try {
+            return api.sendToElasticSearch(remain);
+        } catch (e) {
+            return e.response;
+        }
+    }));
+    console.log(result);
+
 }, 100);
