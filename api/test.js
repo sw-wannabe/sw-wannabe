@@ -21,5 +21,13 @@ setTimeout(async () => {
     // 데이터 크롤링 된 시간으로 필터링, 형식은 마찬가지.
     list = await api.searchPoliceDB({ insertDateFrom: '2017-11-29-14:15:16' });
     console.log(list);
-
+	
+    // 모든 카테고리 가져옴 (중복 제거)
+    list = await api.getPoliceDBCategories();
+    console.log(list);
+	
+    // 모든 카테고리 가져옴 (중복 제거)
+    list = await api.getSeoulDBCategories();
+    console.log(list);
+	
 }, 100);
