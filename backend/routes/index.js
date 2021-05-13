@@ -44,9 +44,6 @@ router.get('/info', function (req, res, next) {
 router.get('/userinfo', function (req, res, next) {
     const user_id = getOrCreateUserIdFromCookie(req, res);
 
-    const current_user_info = user_infos[user_id];
-    console.log(current_user_info);
-
     // 유저가 등록한 items 보여주는 화면
     const items = user_infos[user_id].items;
     for (const item_idx in items) {
@@ -70,7 +67,7 @@ router.post('/search', function (req, res, next) {
     const items = getAllSearchedItems(request_item);
 
     // search.ejs, 검색한 목록 프론트에 전달 (new list + old list)
-    res.render('search', { items: items });
+    res.render('search', { items: items, condition: request_item });
 
     // userinfo의 최종 검색 시간 갱신
     user_infos[user_id].last_query_date = getCurrentDatetimeString();
