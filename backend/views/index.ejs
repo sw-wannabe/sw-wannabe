@@ -1,11 +1,59 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>찾고 또 찾고</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/litera/bootstrap.min.css" integrity="sha384-enpDwFISL6M3ZGZ50Tjo8m65q06uLVnyvkFO3rsoW0UC15ATBFz3QEhr3hmxpYsn" crossorigin="anonymous">
+        <link rel="stylesheet" href="/stylesheets/style.css" type="text/css">
+    </head>
+    <script>
+
+    </script>
+    <body>
+        <div class='box'>
+            <div class='wave -one'></div>
+            <div class='wave -two'></div>
+            <div class='wave -three'></div>
+            <div class='title' style="margin-top: 100px;">분실물 <br>토탈 관리</div>
+        </div>
+
+
+        <div class="input-section">
+            <div class="form-group"  class="input-width">
+                <!--                <label for="exampleInputPassword1" class="form-label mt-4">Password</label>-->
+                <input type="date" class="form-control" id="exampleInputPassword1" placeholder="분실 일자">
+            </div>
+            <div class="form-group" class="input-width">
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="분실 위치">
+            </div>
+            <div class="form-group" class="input-width">
+                <!--      <label for="exampleSelect1" class="form-label mt-4">Example select</label>-->
+                <select class="form-select" id="exampleSelect1">
+                    <option>분실물 분류</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                </select>
+            </div>
+            <div class="form-group" class="input-width">
+                <!--                <label for="exampleInputEmail1" class="form-label mt-4">Email address</label>-->
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="분실물 이름">
+                <small id="emailHelp" class="form-text text-muted">분실물의 브랜드 이름 등을 적어주세요.</small>
+            </div>
+
+            <div class="input-width">
+                <a class="today"> 오늘 물건을 잃어버렸다면?</a>
+            </div>
+
+            <div class="search-wrap">
+                <label for="search-button-id" style="cursor:pointer">
+                    <div class="search-button">
+                        <span style="line-height: 50px">검색</span>
+                        <button id="search-button-id"></button>
+                    </div>
+                </label>
+            </div>
+        </div>
+    </body>
 </html>

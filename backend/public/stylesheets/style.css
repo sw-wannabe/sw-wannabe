@@ -1,8 +1,186 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+html, body {
+    height: 100%;
 }
 
-a {
-  color: #00B7FF;
+html {
+    background: #eee;
+}
+
+body {
+    display: flex;
+    /*justify-content: center;*/
+    align-items: center;
+}
+
+@font-face {
+    font-family: "Omni030";
+    src: url(font/OmniGothic030.ttf);
+}
+@font-face {
+    font-family: "Omni020";
+    src: url(font/OmniGothic020.ttf);
+}
+@font-face {
+    font-family: "NanumSquare";
+    src: url(font/NanumSquare.ttf);
+}
+
+.box {
+    width: 300px;
+    height: 300px;
+    border-radius: 40px;
+    box-shadow: 0 2px 30px rgba(0,0,0, .2);
+    /*background: lighten(240,244,195, 10%);*/
+    position: relative;
+    left: 12%;
+    top: -10%;
+    overflow: hidden;
+    transform: translate3d(0, 0, 0);
+    transition: transform .5s;
+}
+
+.wave {
+    opacity: .4;
+    position: absolute;
+    top: 3%;
+    left: 50%;
+    background: #0af;
+    width: 500px;
+    height: 500px;
+    margin-left: -250px;
+    margin-top: -250px;
+    transform-origin: 50% 48%;
+    border-radius: 43%;
+    animation: drift 3000ms infinite linear;
+}
+
+.wave.-three {
+    animation: drift 5000ms infinite linear;
+}
+
+.wave.-two {
+    animation: drift 7000ms infinite linear;
+    opacity: .1;
+    background: yellow;
+}
+
+.box:after {
+    content: '';
+    display: block;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0, 100, 248, 1), rgba(221,238,255, 0) 80%, rgba(255,255,255, .5));
+    z-index: 11;
+    transform: translate3d(0, 0, 0);
+}
+
+.box:hover, .search-button:hover, .today:hover{
+    transform:scale(1.1);
+    transition: transform .5s;
+}
+
+.title {
+    position: absolute;
+    /*left: 0;*/
+    /*top: 0;*/
+    width: 100%;
+    z-index: 1;
+    /*line-height: 300px;*/
+    text-align: center;
+    transform: translate3d(0, 0, 0);
+    color: white;
+    text-transform: uppercase;
+    font-family: Omni030, serif;
+    letter-spacing: .4em;
+    font-size: 35px;
+    text-shadow: 0 1px 0 rgba(0,0,0, .1);
+    text-indent: .3em;
+}
+
+.input-section{
+    position: relative;
+    width: 600px;
+    /*height: 50px;*/
+    left: 25%;
+    bottom: 7%;
+    float: bottom;
+    text-align: center;
+}
+
+.search-button{
+    width: 120px;
+    height: 50px;
+    border: 2px solid #eeeeee;
+    border-radius: 20px;
+    /*background-color: #00aaff;*/
+    background: linear-gradient(to right , #12d8d8,  #356ce6);
+    text-align: center;
+    font-family: Omni030;
+    font-size: 25px;
+    color: white;
+}
+
+.form-select{
+    width: 600px;
+    height: 50px;
+}
+
+.today{
+    width: 400px;
+    font-family: Omni030;
+    font-size: 20px;
+    font-style: oblique;
+    text-decoration: underline;
+    text-align: center;
+}
+
+.input-width{
+    width: 600px;
+    border-radius: 30px;
+    margin-bottom: 20px;
+}
+
+#search-button-id{
+    display: none;
+}
+
+.search-wrap{
+    text-align: center;
+}
+
+.form-control{
+    border-radius: 20px;
+}
+
+.form-select{
+    border-radius: 20px;
+}
+
+input::placeholder, .placeholder{
+    font-family: Omni030;
+    font-size: 25px;
+    text-align: center;
+}
+
+input[type=date]::-webkit-datetime-edit-text { -webkit-appearance: none; display: none; }
+input[type=date]::-webkit-datetime-edit-month-field{ -webkit-appearance: none; display: none; }
+input[type=date]::-webkit-datetime-edit-day-field { -webkit-appearance: none; display: none; }
+input[type=date]::-webkit-datetime-edit-year-field { -webkit-appearance: none; display: none; }
+
+
+
+@keyframes drift {
+    from { transform: rotate(0deg); }
+    from { transform: rotate(360deg); }
+}
+
+@media screen and (max-width: 768px) {
+    .box {
+        margin: 15% auto;
+    }
+    .title{
+        font-family: Omni020;
+    }
 }
