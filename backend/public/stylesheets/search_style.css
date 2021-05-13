@@ -1,0 +1,105 @@
+* {
+  box-sizing: border-box;
+}
+
+li {
+  list-style: none;
+}
+
+.logo a {
+  color: #000;
+  text-decoration: none;
+}
+
+.logo a:hover {
+  color: #000;
+  text-decoration: none;
+}
+
+.logo a:visited {
+  color: #000;
+  text-decoration: none;
+}
+
+.logo {
+  padding-top: 5px;
+  padding-left: 40px;
+  font-size: 40px;
+}
+
+.lostlist {
+  float: left;
+  width: 700px;
+  height: 170px;
+  padding: 20px;
+  margin: 0px auto;
+  font-family: NanumSquareR;
+  font-size: 20px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.lostlist ol > li {
+  float: left;
+  margin: 0 10px;
+}
+
+.lostrow {
+  width: 1000px;
+  height: 200px;
+  margin: 0px 100px auto auto;
+}
+
+#search-button {
+  background-color: #ff6767;
+  width: 90%;
+  height: 50px;
+  color: #fff;
+  border: 0em;
+  border-radius: 30px;
+  margin: 50px auto;
+  font-family: NanumsquareR;
+  font-size: 20px;
+  box-shadow: rgba(149, 157, 165, 0.5) 0px 8px 24px;
+}
+
+.search {
+  width: 700px;
+  height: 200px;
+  margin: 0px auto;
+}
+
+strong {
+  margin-right: 20px;
+  font-size: 35px;
+}
+
+.sub-title {
+  float: left;
+  color: #fff;
+  background: linear-gradient(90deg, #2760e2 0%, #2de3d5 100%);
+  width: 200px;
+  height: auto;
+  padding-left: 20px;
+  padding-top: 20px;
+  padding-bottom: 5px;
+  border-radius: 30px;
+  margin-left: 40px;
+}
+
+.sub-title strong {
+  font-size: 50px;
+}
+
+ul {
+  margin: 0px auto;
+}
+
+#search-list li {
+  display: inline-block;
+  margin-left: 70px;
+}
+
+#search-list img {
+  width: 200px;
+  height: 200px;
+}

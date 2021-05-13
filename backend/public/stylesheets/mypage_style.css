@@ -1,0 +1,79 @@
+* {
+  box-sizing: border-box;
+}
+
+li {
+  list-style: none;
+}
+
+.logo a {
+  color: #000;
+  text-decoration: none;
+}
+
+.logo a:hover {
+  color: #000;
+  text-decoration: none;
+}
+
+.logo a:visited {
+  color: #000;
+  text-decoration: none;
+}
+
+.logo {
+  padding-top: 5px;
+  padding-left: 40px;
+  font-size: 40px;
+}
+
+#delete-button {
+  background-color: #ff6767;
+  color: #fff;
+  border: 0em;
+  border-radius: 10px;
+  margin: 10px auto;
+  padding: 10px;
+  width: 50%;
+  height: 30%;
+  font-family: NanumsquareR;
+  font-size: 15px;
+  box-shadow: rgba(149, 157, 165, 0.5) 0px 8px 24px;
+}
+
+.lostlist {
+  float: left;
+  width: 700px;
+  height: 170px;
+  padding: 20px;
+  margin: 0px auto;
+  font-family: NanumSquareR;
+  font-size: 20px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.lostlist ol > li {
+  float: left;
+  margin: 0 10px;
+}
+
+.lostlist-button {
+  vertical-align: middle;
+  width: 170px;
+  height: 170px;
+  padding: 20px;
+  margin: 45px auto;
+  float: left;
+}
+
+.lostrow {
+  width: 1000px;
+  height: 200px;
+  padding: 20px 50px;
+  margin: 0px 100px auto auto;
+}
+
+strong {
+  margin-right: 20px;
+  font-size: 35px;
+}
