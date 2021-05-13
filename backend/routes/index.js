@@ -355,7 +355,7 @@ function getBodyForElasticSearch(item, last_query_date) {
 }
 
 
-getAllSearchedItemsFromElasticSearch({date: "2021-04-30",
-									 place: "서울시",
-									 category: "가방",
-									 name: "가방"}); ////////////////////////////////////////////////////////////////
+// getAllSearchedItemsFromElasticSearch({date: "2021-04-30",
+// 									 place: "서울시",
+// 									 category: "가방",
+// 									 name: "가방"}); ////////////////////////////////////////////////////////////////
