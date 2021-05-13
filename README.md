@@ -94,7 +94,7 @@
 
 2. **Elasticsearch를 이용한 더 효과적인 탐색**
 
-<img src="readme_images/es.png" />
+<img src="https://user-images.githubusercontent.com/57023279/118199258-a06fc500-b48d-11eb-813b-d03e16ddbb40.png" />
     
 - '헤지스'이든, '해지스'이든 상관 없습니다.
 - '카드'이든, '신용카드'이든 상관 없습니다.
