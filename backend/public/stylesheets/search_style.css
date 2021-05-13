@@ -103,3 +103,7 @@ ul {
   width: 200px;
   height: 200px;
 }
+
+td {
+  padding: 30px;
+}
