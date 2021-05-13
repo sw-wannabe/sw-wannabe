@@ -93,11 +93,11 @@ def get_all(page):
         cur.execute(query, values)
 
 
-# for i in range(33, 1000):
-#     print(f'Start crawling {i}')
-#     get_all(i)
-#     print(f'Finished crawling {i}')
-#     con.commit()
+for i in range(140, 1000):
+    print(f'Start crawling {i}')
+    get_all(i)
+    print(f'Finished crawling {i}')
+    con.commit()
 
 losts = cur.execute('SELECT * FROM losts_police').fetchall()
 for row in losts:

@@ -22,15 +22,17 @@ if INIT_POLICE:
         CREATE TABLE losts_police (
             id TEXT PRIMARY KEY,
             name TEXT,
-            owner_name TEXT,
-            date DATE,
-            place TEXT,
             category TEXT,
+            place TEXT,
+            date DATE,
+            insert_time DATE,
+
+            owner_name TEXT,
             take_place TEXT,
             keep_place TEXT,
             img TEXT,
             status TEXT,
-            contact TEXT
+            contact TEXT,
         );
     ''')
 con.commit()
