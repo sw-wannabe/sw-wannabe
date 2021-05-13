@@ -104,3 +104,6 @@ dist
 .tern-port
 goorm.manifest
 configs
+
+# Personal VsCode settings
+.vscode
