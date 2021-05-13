@@ -107,3 +107,4 @@ configs
 
 # Personal VsCode settings
 .vscode
+*.sqlite3
