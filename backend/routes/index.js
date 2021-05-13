@@ -28,7 +28,6 @@ router.get('/', async function (req, res, next) {
 });
 
 router.get('/info', function (req, res, next) {
-    res.render('index', { title: 'Info' });
 	
 	const user_id = getOrCreateUserIdFromCookie(req, res);
 	
