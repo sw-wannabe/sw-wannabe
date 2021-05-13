@@ -46,9 +46,6 @@ router.get('/info', function (req, res, next) {
 router.get('/userinfo', function (req, res, next) {
     const user_id = getOrCreateUserIdFromCookie(req, res);
 
-    const current_user_info = user_infos[user_id];
-    console.log(current_user_info);
-
     // 유저가 등록한 items 보여주는 화면
     const items = user_infos[user_id].items;
     for (const item_idx in items) {
