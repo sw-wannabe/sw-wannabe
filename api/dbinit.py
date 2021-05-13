@@ -17,12 +17,11 @@ cur = con.cursor()
 cur.execute('''
     CREATE TABLE losts_police (
         id TEXT PRIMARY KEY,
-        place TEXT,
         name TEXT,
-        title TEXT,
-        date DATE,
         category TEXT,
-        number INTEGER
+        place TEXT,
+        date DATE,
+        insert_time DATE
     );
 ''')
 
@@ -30,16 +29,17 @@ cur.execute('''
 cur.execute('''
     CREATE TABLE losts_seoul (
         id TEXT PRIMARY KEY,
-        status TEXT,
-        date DATE,
-        get DATE,
-        description TEXT,
-        take_id TEXT,
-        place TEXT,
         name TEXT,
         category TEXT,
-        area TEXT,
-        position TEXT,
-        good TEXT
+        place TEXT,
+        date DATE,
+        insert_time DATE,
+
+        description TEXT,
+        status TEXT,
+        reg_date DATE,
+        take_place TEXT,
+        company TEXT,
+        position TEXT
     );
 ''')

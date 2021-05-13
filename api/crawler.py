@@ -2,6 +2,7 @@ from urllib.parse import urlencode, quote_plus
 import requests
 import sqlite3
 import xml.etree.ElementTree as ET
+from datetime import datetime
 
 con = sqlite3.connect('./database.sqlite3')
 cur = con.cursor()
@@ -22,20 +23,16 @@ def query_police():
     })
 
     map_police = {
-        'atcId': 'id',
-        'lstPlace': 'place',
-        'lstPrdtNm': 'name',
-        'lstSbjt': 'title',
-        'lstYmd': 'date',
-        'prdtClNm': 'category',
-        'rnum': 'number'
+        'id': 'atcId',
+        'place': 'lstPlace',
+        'name': 'lstPrdtNm',
+        'date': 'lstYmd',
+        'category': 'prdtClNm',
+        'insert_time': 'insert_time'
     }
 
-    keys = map_police.keys()
-    columns = []
-    for key in keys:
-        columns.append(map_police[key])
-    query = f'REPLACE INTO losts_police ({ ",".join(columns) }) VALUES ({",".join(["?"]*len(keys))})'
+    columns = map_police.keys()
+    query = f'INSERT OR IGNORE INTO losts_police ({ ",".join(columns) }) VALUES ({",".join(["?"]*len(columns))})'
 
     url = base_url+query_params
     print(url)
@@ -44,9 +41,14 @@ def query_police():
     root = ET.fromstring(text)
     items = root[1][0]
     for item in items:
-        values = []
+        attributes = {
+            'insert_time': datetime.today().strftime('%Y-%m-%d-%H:%M:%S')
+        }
         for attribute in item:
-            values.append(attribute.text)
+            attributes[attribute.tag] = attribute.text
+        values = []
+        for column in columns:
+            values.append(attributes[map_police[column]])
         cur.execute(query, values)
     con.commit()
 
@@ -59,41 +61,41 @@ def query_seoul(start, end):
     json = r.json()
 
     map_seoul = {
-        'ID': 'id',
-        'STATUS': 'status',
-        'REG_DATE': 'date',
-        'GET_DATE': 'get',
-        'GET_THING': 'description',
-        'TAKE_PLACE': 'place',
-        'TAKE_ID': 'take_id',
-        'GET_NAME': 'name',
-        'CATE': 'category',
-        'GET_AREA': 'area',
-        'GET_POSITION': 'position',
-        'GET_GOOD': 'good'
+        'id': 'ID',
+        'status': 'STATUS',
+        'reg_date': 'REG_DATE',
+        'date': 'GET_DATE',
+        'description': 'GET_THING',
+        'place': 'GET_AREA',
+        'name': 'GET_NAME',
+        'category': 'CATE',
+        'take_place': 'TAKE_PLACE',
+        'company': 'GET_POSITION',
+        'position': 'GET_GOOD',
+        'insert_time': 'insert_time'
     }
 
-    keys = map_seoul.keys()
-    columns = []
-    for key in keys:
-        columns.append(map_seoul[key])
-
-    query = f'REPLACE INTO losts_seoul ({ ",".join(columns) }) VALUES ({",".join(["?"]*len(keys))})'
+    columns = map_seoul.keys()
+    query = f'INSERT OR IGNORE INTO losts_seoul ({ ",".join(columns) }) VALUES ({",".join(["?"]*len(columns))})'
 
     data = json["lostArticleInfo"]["row"]
     for row in data:
+        row['insert_time'] = datetime.today().strftime('%Y-%m-%d-%H:%M:%S')
         values = []
-        for key in keys:
-            values.append(row[key])
+        for column in columns:
+            values.append(row[map_seoul[column]])
         cur.execute(query, values)
     con.commit()
 
 
+# 데이터 몇 개 샘플로 가져옴
 query_police()
 query_seoul(0, 10)
 
-# for row in cur.execute('SELECT * FROM losts_police').fetchall():
-#     print(row)
+SHOW_TEST = True
+if SHOW_TEST:
+    for row in cur.execute('SELECT * FROM losts_police').fetchall():
+        print(row)
 
-# for row in cur.execute('SELECT * FROM losts_seoul').fetchall():
-#     print(row)
+    for row in cur.execute('SELECT * FROM losts_seoul').fetchall():
+        print(row)
