@@ -5,14 +5,14 @@ const api = require('../../api/index');
 
 console.log(api);
 
+console.log(getCurrentDatetimeString());
+
 let num_of_user = 0;
 
 const user_infos = {};
 
 /* GET home page. */
 router.get('/', async function (req, res, next) {
-    // res.sendFile(__dirname + "");
-	
 	const user_id = getOrCreateUserIdFromCookie(req, res);
 	
 	try {
@@ -24,18 +24,27 @@ router.get('/', async function (req, res, next) {
 	}
 	
 	// index.ejs 전달
-    res.render('index', { title: 'index' });
+	try {
+		res.render('index', { num_of_noti: await getNumOfNotiPerUser(user_id) });
+	} catch (error) {
+		console.log(error);
+		res.render('index');
+	}
+    
 });
 
 router.get('/info', function (req, res, next) {
+<<<<<<< Updated upstream
 	
+=======
+>>>>>>> Stashed changes
 	const user_id = getOrCreateUserIdFromCookie(req, res);
 	
-	// info.html 전달
-    res.render('info', { title: 'User Info' });
+	// info.ejs 전달
+    res.render('info', {  });
 });
 
-router.get('/user_infos', function (req, res, next) {
+router.get('/userinfo', function (req, res, next) {
 	
 	const user_id = getOrCreateUserIdFromCookie(req, res);
 	
@@ -43,6 +52,7 @@ router.get('/user_infos', function (req, res, next) {
 	console.log(current_user_info);
 	
     // 유저가 등록한 items를 배열에 담아 JSON으로 리턴 {items: []}
+	res.json({ items: user_infos[user_id].items, }); /////////////////////////////////////////////////////////////////////////////////
 });
 
 
@@ -56,10 +66,13 @@ router.post('/search', function (req, res, next) {
 	const request_item = getRequestItem(req);
 	
 	// DB 검색
+	const items = getAllSearchedItems(request_item)
 	
-	// 유저 정보 저장
+	// search.ejs, 검색한 목록 프론트에 전달 (new list + old list)
+    res.render('search', { items: getAllSearchedItemsByLastSearchTime(items, uesr_id), });
 	
-	// searchList.html, 검색한 목록 프론트에 전달 (new list + old list)
+	// userinfo의 최종 검색 시간 갱신
+	user_infos[user_id].last_query_date = getCurrentDatetimeString();
 });
 
 router.post('/checknew', function (req, res, next) {
@@ -72,9 +85,8 @@ router.post('/checknew', function (req, res, next) {
 	
 	// DB 검색 - 새로운 리스트 가져오기 -> 이전 최신 물품은 서버에 저장해두기
 	
-	// 유저 정보 저장
-	
-	// searchList.html, 검색한 목록 프론트에 전달 (new list + old list)
+	// userinfo의 최종 검색 시간 갱신
+	user_infos[user_id].last_query_date = getCurrentDatetimeString();
 });
 
 router.post('/register', function (req, res, next) {
@@ -100,7 +112,6 @@ router.post('/remove', function (req, res, next) {
 	
 	// 분실 일시, 분실 장소, 분실 분류, 분실 이름 넘어옴
 	const request_item = getRequestItem(req);
-	
 	
 	// user_infos items 확인하며 동일한거 발견하면 삭제
 	for (item of user_infos[user_id].items) {
@@ -154,35 +165,21 @@ function getOrCreateUserIdFromCookie(req, res) {
 }
 
 // 특정 아이템에 대한 알림 수 (시간도 고려)
-async function getNumOfNotiPerItem(item) {
-	const policeItems = await api.searchPoliceDB({ 
-		insertDateFrom: user_infos[user_id].last_query_date, 
-		location: item.location, 
-		name: item.name, 
-		category: item.category });
-	
-	const seoulItems = await api.searchSeoulDB({ 
-		insertDateFrom: user_infos[user_id].last_query_date, 
-		location: item.location, 
-		name: item.name, 
-		category: item.category });
-	
-	const items = policeItems.concat(seoulItems);
-	
-	return items.length
+async function getNumOfNotiPerItem(item, user_id) {
+	return await getAllSearchedItemsByLastSearchTime(item, user_id).length;
 }
 
 // 유저에 대한 알림 수 (시간도 고려)
 async function getNumOfNotiPerUser(user_id) {
 	num_of_noti_per_user = 0;
 	for (item of user_infos[user_id].items) {
-		num_of_noti_per_user += await getNumOfNotiPerItem(item);
+		num_of_noti_per_user += await getNumOfNotiPerItem(item, user_id);
 	}
 	
 	return num_of_noti_per_user;
 }
 
-// 모든 category
+// DB에 저장된 모든 category 가져오는 함수
 async function getAllItemCategories() {
 	const seoul_list = await api.getSeoulDBCategories();
 	const police_list = await api.getPoliceDBCategories();
@@ -194,6 +191,58 @@ async function getAllItemCategories() {
 	}
 	
 	return all_categories_list = [...new Set(all_categories_list)];
+}
+
+async function getAllSearchedItems(item) {
+	const policeItems = await api.searchPoliceDB({ 
+		date: item.date, 
+		location: item.location, 
+		name: item.name, 
+		category: item.category });
+	
+	const seoulItems = await api.searchSeoulDB({ 
+		date: item.date, 
+		location: item.location, 
+		name: item.name, 
+		category: item.category });
+	
+	const items = policeItems.concat(seoulItems);
+	
+	return items;
+}
+
+async function getAllSearchedItemsByLastSearchTime(item, user_id) {
+	const policeItems = await api.searchPoliceDB({ 
+		date: item.date, 
+		location: item.location, 
+		name: item.name, 
+		category: item.category,
+		insertDateFrom: user_infos[user_id].last_query_date });
+	
+	const seoulItems = await api.searchSeoulDB({ 
+		date: item.date,
+		location: item.location, 
+		name: item.name, 
+		category: item.category,
+		insertDateFrom: user_infos[user_id].last_query_date });
+	
+	const items = policeItems.concat(seoulItems);
+	
+	return items;
+}
+	
+function getCurrentDatetimeString() {
+	const today = new Date();
+	const dd = String(today.getDate()).padStart(2, '0');
+	const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+	const yyyy = today.getFullYear();
+	const hh = String(today.getHours()).padStart(2, '0');
+	const minutes = String(today.getMinutes()).padStart(2, '0');
+	const ss = String(today.getSeconds()).padStart(2, '0');
+
+	const datetime_string = yyyy + '-' + mm + '-' + dd + '-' + hh + ':' + minutes + ":" + ss;
+	
+	return datetime_string;
 }
 
 // user_infos에 마지막 분실물 리스트 확인 시간 저장해둬야 함. 분실물 리스트 확인 시간 갱신 해야 함 ->
