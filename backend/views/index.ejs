@@ -10,7 +10,7 @@
             <div class='wave -one'></div>
             <div class='wave -two'></div>
             <div class='wave -three'></div>
-            <div class='title' style="margin-top: 100px;">분실물 <br>토탈 관리</div>
+            <div class='title'>분실물<br/>토탈<br/>관리</div>
         </div>
 
         <!-- 인풋 wrap  -->
@@ -31,12 +31,14 @@
 
           <!-- 분실 일자 -->
             <div class="form-group input-width">
+              <strong>🗓</strong>
                 <!-- <input type="text" onfocus="(this.type='date')" name="lost-date" class="form-control" id="exampleInputPassword1" placeholder="분실 일자"> -->
                 <input type="text" id="datePicker" class="form-control" name="" value="" placeholder="분실 일자">
             </div>
 
             <!-- 분실 위치 -->
             <div class="form-group input-width">
+              <strong>🌏</strong>
               <select class="form-select form-control" id="lost-location-id" name="lost-location" id="exampleSelect1">
                   <option>서울특별시</option>
                   <option>경기도</option>
@@ -48,19 +50,21 @@
 
             <!-- 분실물 분류 -->
             <div class="form-group input-width">
+                <strong>📚</strong>
                 <select class="form-select form-control" id="lost-option-id" name="lost-option" id="exampleSelect1">
                     <option>지갑</option>
                     <option>핸드폰</option>
                     <option>아이폰</option>
                     <option>가방</option>
                 </select>
-
             </div>
-            <div class="form-group" class="input-width">
+            <div class="form-group input-width">
+                <strong>🔎</strong>
                 <input type="text" class="form-control" id="lost-keyword" aria-describedby="emailHelp" placeholder="분실물 키워드">
-                <small id="emailHelp" class="form-text text-muted">분실물의 브랜드 이름 등을 적어주세요.</small>
             </div>
-
+            <div class="input-width">
+              <small id="emailHelp" class="form-text text-muted">분실물의 브랜드 이름 등을 적어주세요.</small>
+              </div>
             <!-- 대중교통 분실물 안내 페이지 링크 -->
             <div class="input-width">
                 <a href="/info" class="today"> 오늘 물건을 잃어버렸다면?</a>
