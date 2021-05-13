@@ -93,7 +93,7 @@ def get_all(page):
         cur.execute(query, values)
 
 
-for i in range(140, 1000):
+for i in range(470, 1000):
     print(f'Start crawling {i}')
     get_all(i)
     print(f'Finished crawling {i}')
