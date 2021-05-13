@@ -1,42 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>마이 페이지</title>
-    <link rel="stylesheet" href="/stylesheets/mypage_style.css">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <% include ./header %>
+  <title>마이 페이지</title>
 </head>
 <body>
-    <div class="logo">
-        <h1>
-            <a href="#">
-                분토관
-            </a>
-        </h1>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <h1 class="main-title" onclick="location.href='./'" style="cursor:pointer">분실물 토탈 관리: 내 알림 목록</h1>
+      </div>
     </div>
-
-    <div class="lostrow">
-        <div class="lostlist">
-            <ol>
-                <li>
-                    <ul>
-                        <li><strong>🗓</strong>21.05.03</li>
-                        <li><strong>🌏</strong>서울특별시 용산구</li>
-                    </ul>
-                </li>
-                <li>
-                    <ul>
-                        <li><strong>📚</strong>가방</li>
-                        <li><strong>🔎</strong>네이비 해지스 가방</li>
-                    </ul>
-                </li>
-            </ol>
-        </div>
-        <div class="lostlist-button">
-            <button id="delete-button" type="button">삭제</button>
-        </div>
+    <div class="row condition-row" style="padding:0 10%">
+      <div class="col-lg-12"  style="text-align:center">
+        <% items.forEach(function(item){ {%>
+          <div class='row'>
+            <div class='col-xs-10'>
+              <div class="row condition-row">
+                <div class="col-6 col-md-3">
+                  🗓 <%=item.date%>
+                </div>
+                <div class="col-6 col-md-3">
+                  🌏 <%=item.location%>
+                </div>
+                <div class="col-6 col-md-3">
+                  📚 <%=item.category%>
+                </div>
+                <div class="col-6 col-md-3">
+                  🔎 <%=item.name%>
+                </div>
+              </div>
+            </div>
+            <div class='col-xs-2'>
+              <form action="./remove" method="post">
+                <input type='hidden' name='date' value='<%=item.date%>'/>
+                <input type='hidden' name='location' value='<%=item.location%>'/>
+                <input type='hidden' name='category' value='<%=item.category%>'/>
+                <input type='hidden' name='name' value='<%=item.name%>'/>
+                <input type='submit' class='btn btn-danger' value='삭제'/>
+              </form>
+            </div>
+        <% }) %>
+      </div>
     </div>
-
+  </div>
 </body>
 </html>
