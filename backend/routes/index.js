@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser');
 const api = require('../../api/index');
+const request = require('request');
 
 console.log(api);
 
@@ -15,24 +16,22 @@ const user_infos = {};
 router.get('/', async function (req, res, next) {
     const user_id = getOrCreateUserIdFromCookie(req, res);
 
-    try {
-        const categories = await getAllItemCategories();
-        console.log(categories);
-        console.log(await getNumOfNotiPerUser(user_id));
-    } catch (error) {
-        console.log(error);
-    }
+    var categories;
+    var num_of_noti;
 
-    // index.ejs 전달
     try {
-        res.render('index', {
-            num_of_noti: await getNumOfNotiPerUser(user_id),
-            categories: await getAllItemCategories(),
-        });
+        categories = await getAllItemCategories();
+        num_of_noti = await getNumOfNotiPerUser(user_id);
     } catch (error) {
         console.log(error);
         res.render('index');
     }
+
+    // index.ejs 전달
+    res.render('index', {
+        num_of_noti: num_of_noti,
+        categories: categories,
+    });
 });
 
 router.get('/info', function (req, res, next) {
@@ -49,11 +48,13 @@ router.get('/userinfo', function (req, res, next) {
     console.log(current_user_info);
 
     // 유저가 등록한 items 보여주는 화면
-	const items = user_infos[user_id].items;
-	for (const item_idx in items) {
-		items[item_idx][num_of_noti] = getNumOfNotiPerItem(items[item_idx], user_id);
-	}
-    res.json({ items: items });
+    const items = user_infos[user_id].items;
+    for (const item_idx in items) {
+        items[item_idx][num_of_noti] = getNumOfNotiPerItem(items[item_idx], user_id);
+    }
+
+    // userinfo.ejs 전달
+    res.render('userinfo', { items: items });
 });
 
 // post
@@ -69,7 +70,7 @@ router.post('/search', function (req, res, next) {
     const items = getAllSearchedItems(request_item);
 
     // search.ejs, 검색한 목록 프론트에 전달 (new list + old list)
-    res.render('search', { items: getAllSearchedItemsByLastSearchTime(items, uesr_id) });
+    res.render('search', { items: items });
 
     // userinfo의 최종 검색 시간 갱신
     user_infos[user_id].last_query_date = getCurrentDatetimeString();
@@ -84,6 +85,11 @@ router.post('/checknew', function (req, res, next) {
     const request_item = getRequestItem(req);
 
     // DB 검색 - 새로운 리스트 가져오기 -> 이전 최신 물품은 서버에 저장해두기
+    const new_items = getAllSearchedItemsByLastSearchTime(request_item, user_id);
+    const items = getAllSearchedItems(request_item);
+
+    // search.ejs, 검색한 목록 프론트에 전달 (new list + old list)
+    res.render('search', { new_items: new_items, items: items });
 
     // userinfo의 최종 검색 시간 갱신
     user_infos[user_id].last_query_date = getCurrentDatetimeString();
@@ -101,7 +107,14 @@ router.post('/register', function (req, res, next) {
     user_infos[user_id].items.push(request_item);
     console.log(user_infos[user_id]);
 
-    // 전달할 거 있는지??
+    // DB 검색
+    const items = getAllSearchedItems(request_item);
+
+    request('/userinfo', function (error, response, body) {
+        if (error) {
+            console.log(error);
+        }
+    });
 });
 
 // 아이템 삭제
@@ -125,6 +138,12 @@ router.post('/remove', function (req, res, next) {
             break;
         }
     }
+	
+    request('/userinfo', function (error, response, body) {
+        if (error) {
+            console.log(error);
+        }
+    });
 });
 
 module.exports = router;
@@ -308,8 +327,6 @@ function getBodyForElasticSearch(item, user_id) {
         ],
         _source: ['name', 'category', 'place', 'date', 'insert_time'],
     };
-	
-	return body;
-}
 
-// user_infos에 마지막 분실물 리스트 확인 시간 저장해둬야 함. 분실물 리스트 확인 시간 갱신 해야 함 ->
+    return body;
+}
