@@ -34,10 +34,6 @@ router.get('/', async function (req, res, next) {
 });
 
 router.get('/info', function (req, res, next) {
-<<<<<<< Updated upstream
-	
-=======
->>>>>>> Stashed changes
 	const user_id = getOrCreateUserIdFromCookie(req, res);
 	
 	// info.ejs 전달
