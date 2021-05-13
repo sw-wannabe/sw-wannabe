@@ -266,7 +266,7 @@ input#new-lost-checkbox:checked + .new-lost-number {
 } */
 
 strong {
-  font-size: 30px;
+  font-size: 40px;
   float: left;
   width: 10%;
 }
@@ -283,4 +283,10 @@ strong {
     .title{
         font-family: Omni020;
     }
+}
+
+#lost-datepicker,
+.table-condensed {
+  width: 250px;
+  height:250px;
 }

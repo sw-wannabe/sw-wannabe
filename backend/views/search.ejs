@@ -10,7 +10,7 @@
 <body>
     <div class="logo">
         <h1>
-            <a href="#">
+            <a href="./">
                 분토관
             </a>
         </h1>
@@ -21,21 +21,21 @@
             <ol>
                 <li>
                     <ul>
-                        <li><strong>🗓</strong>21.05.03</li>
-                        <li><strong>🌏</strong>서울특별시 용산구</li>
+                        <li><strong>🗓</strong><%=condition.date%></li>
+                        <li><strong>🌏</strong><%=condition.location%></li>
                     </ul>
                 </li>
                 <li>
                     <ul>
-                        <li><strong>📚</strong>가방</li>
-                        <li><strong>🔎</strong>네이비 해지스 가방</li>
+                        <li><strong>📚</strong><%=condition.category%></li>
+                        <li><strong>🔎</strong><%=condition.name%></li>
                     </ul>
                 </li>
             </ol>
         </div>
     </div>
     <div class="search">
-        <button id="search-button" type="button">💡 내 물건이 없다면 등록하세요!</button>
+        <button id="search-button" type="button">💡 검색 결과에 대한 알림 받기!</button>
     </div>
 
     <div class="sub-title">

@@ -1,140 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <% include ./header %>
-    </head>
-    <body>
+<head>
+  <% include ./header %>
+  <%= categories %>
+</head>
+<body>
 
-      <!-- 제목 물결 박스 -->
-        <div class='box'>
-            <div class='wave -one'></div>
-            <div class='wave -two'></div>
-            <div class='wave -three'></div>
-            <div class='title'>분실물<br/>토탈<br/>관리</div>
-        </div>
+  <!-- 제목 물결 박스 -->
+  <div class='box'>
+    <div class='wave -one'></div>
+    <div class='wave -two'></div>
+    <div class='wave -three'></div>
+    <div class='title'>분실물 <br>토탈<br>관리</div>
+  </div>
 
-        <!-- 인풋 wrap  -->
-        <div class="input-section">
+  <!-- 인풋 wrap  -->
+  <div class="input-section">
 
-          <!-- 새로운 분실물 알림 -->
-          <input type="checkbox" id="new-lost-checkbox" name="" value="" style="display:none">
-          <label for="new-lost-checkbox" onclick="openfunction()">
-          <div class="new-lost-alarm new-lost-light">
-            <span id="fadeinout">💡</span>
+    <!-- 새로운 분실물 알림 -->
+    <input type="checkbox" id="new-lost-checkbox" name="" value="" style="display:none">
+    <label for="new-lost-checkbox" onclick="openfunction()">
+      <div class="new-lost-alarm new-lost-light">
+        <span id="fadeinout">💡</span>
+      </div>
+    </label>
+
+    <!-- form 태그 -->
+    <form action="/search" method="post" onsubmit="return validateForm()">
+      <!-- 분실 일자 -->
+      <div class="form-group input-width">
+        <strong>🗓</strong>
+        <!-- <input type="text" onfocus="(this.type='date')" name="lost-date" class="form-control" id="exampleInputPassword1" placeholder="분실 일자"> -->
+        <input type="text" id="datePicker" class="form-control" name="date" value="" placeholder="분실 일자">
+      </div>
+
+      <!-- 분실 위치 -->
+      <div class="form-group input-width">
+        <strong>🌏</strong>
+        <select class="form-select form-control" id="lost-location-id" name="location" id="exampleSelect1">
+          <option>서울특별시</option>
+          <option>경기도</option>
+          <option>인천특별시</option>
+          <option>대전광역시</option>
+        </select>
+
+      </div>
+
+      <!-- 분실물 분류 -->
+      <div class="form-group input-width">
+        <strong>📚</strong>
+        <select class="form-select form-control" id="lost-option-id" name="category" id="exampleSelect1">
+          <option>지갑</option>
+          <option>핸드폰</option>
+          <option>아이폰</option>
+          <option>가방</option>
+        </select>
+
+      </div>
+      <div class="form-group input-width">
+        <strong>🔎</strong>
+        <input type="text" name="name" class="form-control" id="lost-keyword" aria-describedby="emailHelp" placeholder="분실물 키워드">
+      </div>
+      <div class="form-group input-width">
+        <small id="emailHelp" class="form-text text-muted">분실물의 브랜드 이름 등을 적어주세요.</small>
+      </div>
+
+      <!-- 대중교통 분실물 안내 페이지 링크 -->
+      <div class="input-width">
+        <a href="/info" class="today"> 오늘 물건을 잃어버렸다면?</a>
+      </div>
+
+      <!-- 검색 버튼 -->
+      <div class="search-wrap">
+        <label for="search-button-id" style="cursor:pointer">
+          <div class="search-button">
+            <span style="line-height: 50px">검색</span>
+            <input type="submit" id="search-button-id"></input>
           </div>
-          </label>
+        </label>
+      </div>
+    </form>
+  </div>
+</body>
+<script>
+$('#lost-option-id')
+.editableSelect({effects: 'fade'});
 
-          <!-- form 태그 -->
-          <form class="" action="/search" method="post">
+$('#lost-option-id').val("분실물 분류");
+$("#lost-option-id").attr('class',"select-css form-control")
+$('#lost-option-id').focus(function(){
+  if($('#lost-option-id').val() == "분실물 분류")
+  $('#lost-option-id').val("");
+});
+$('#lost-option-id').focusout(function(){
+  if($('#lost-option-id').val() == "")
+  $('#lost-option-id').val("분실물 분류");
+});
 
-          </form action="/search">
+$('#lost-location-id').editableSelect({effects: 'fade'});
 
-          <!-- 분실 일자 -->
-            <div class="form-group input-width">
-              <strong>🗓</strong>
-                <!-- <input type="text" onfocus="(this.type='date')" name="lost-date" class="form-control" id="exampleInputPassword1" placeholder="분실 일자"> -->
-                <input type="text" id="datePicker" class="form-control" name="" value="" placeholder="분실 일자">
-            </div>
+$('#lost-location-id').val("분실 위치");
+$("#lost-location-id").attr('class',"select-css form-control")
+$('#lost-location-id').focus(function(){
+  if($('#lost-location-id').val() == "분실물 위치")
+  $('#lost-location-id').val("");
+});
+$('#lost-location-id').focusout(function(){
+  if($('#lost-location-id').val() == "")
+  $('#lost-location-id').val("분실물 위치");
+});
 
-            <!-- 분실 위치 -->
-            <div class="form-group input-width">
-              <strong>🌏</strong>
-              <select class="form-select form-control" id="lost-location-id" name="lost-location" id="exampleSelect1">
-                  <option>서울특별시</option>
-                  <option>경기도</option>
-                  <option>인천특별시</option>
-                  <option>대전광역시</option>
-              </select>
+$("#lost-keyword").focus(function(){
+  $('#lost-keyword').attr("placeholder","");
+});
 
-            </div>
+$("#lost-keyword").focusout(function(){
+  $('#lost-keyword').attr("placeholder","분실물 키워드");
+});
 
-            <!-- 분실물 분류 -->
-            <div class="form-group input-width">
-                <strong>📚</strong>
-                <select class="form-select form-control" id="lost-option-id" name="lost-option" id="exampleSelect1">
-                    <option>지갑</option>
-                    <option>핸드폰</option>
-                    <option>아이폰</option>
-                    <option>가방</option>
-                </select>
-            </div>
-            <div class="form-group input-width">
-                <strong>🔎</strong>
-                <input type="text" class="form-control" id="lost-keyword" aria-describedby="emailHelp" placeholder="분실물 키워드">
-            </div>
-            <div class="input-width">
-              <small id="emailHelp" class="form-text text-muted">분실물의 브랜드 이름 등을 적어주세요.</small>
-              </div>
-            <!-- 대중교통 분실물 안내 페이지 링크 -->
-            <div class="input-width">
-                <a href="/info" class="today"> 오늘 물건을 잃어버렸다면?</a>
-            </div>
-
-            <!-- 검색 버튼 -->
-            <div class="search-wrap">
-                <label for="search-button-id" style="cursor:pointer">
-                    <div class="search-button">
-                        <span style="line-height: 50px">검색</span>
-                        <input type="submit" id="search-button-id"></input>
-                    </div>
-                </label>
-            </div>
-
-        </div>
-    </body>
-    <script>
-      $('#lost-option-id')
-      .editableSelect({effects: 'fade'});
-
-      $('#lost-option-id').val("분실물 분류");
-      $("#lost-option-id").attr('class',"select-css form-control")
-      $('#lost-option-id').focus(function(){
-        if($('#lost-option-id').val() == "분실물 분류")
-          $('#lost-option-id').val("");
-      });
-      $('#lost-option-id').focusout(function(){
-        if($('#lost-option-id').val() == "")
-          $('#lost-option-id').val("분실물 분류");
-      });
-
-      $('#lost-location-id').editableSelect({effects: 'fade'});
-
-      $('#lost-location-id').val("분실 위치");
-      $("#lost-location-id").attr('class',"select-css form-control")
-      $('#lost-location-id').focus(function(){
-        if($('#lost-location-id').val() == "분실물 위치")
-          $('#lost-location-id').val("");
-      });
-      $('#lost-location-id').focusout(function(){
-        if($('#lost-location-id').val() == "")
-          $('#lost-location-id').val("분실물 위치");
-      });
-
-      $("#lost-keyword").focus(function(){
-          $('#lost-keyword').attr("placeholder","");
-      });
-
-      $("#lost-keyword").focusout(function(){
-          $('#lost-keyword').attr("placeholder","분실물 키워드");
-      });
-
-      function openfunction(){
-            if($("#fadeinout").text() == "💡"){
-              $("#fadeinout").fadeOut("100", function(){
-                  $("#fadeinout").text("새로 등록된 물품이 3개 있습니다.");
-                  $("#fadeinout").fadeIn(400);
-              });
-            }
-            else{
-              $("#fadeinout").text("💡");
-            }
-      }
+function openfunction(){
+  if($("#fadeinout").text() == "💡"){
+    $("#fadeinout").fadeOut("100", function(){
+      $("#fadeinout").text("새로 등록된 물품이 3개 있습니다.");
+      $("#fadeinout").fadeIn(400);
+    });
+  }
+  else{
+    $("#fadeinout").text("💡");
+  }
+}
 
 
-      $('#datePicker').datepicker({
-    		format: "yyyy-mm-dd",
-    		startDate: '-10d',
-        language : "ko"
-  		})
-    </script>
+$('#datePicker').datepicker({
+  format: "yyyy-mm-dd",
+  startDate: '-10d',
+  language : "ko"
+})
+.on('changeDate', function(ev){
+  $(this).datepicker('hide');
+});
+
+function validateForm() {
+  var loc = $("input[name=location]").val();
+  var cate = $("input[name=category]").val();
+  var nam = $("input[name=name]").val();
+  var dat = $("input[name=date]").val();
+  if(loc==""|| cate=="" || nam=="" || dat==""){
+    alert("정확한 검색을 위해 모두 입력해주세요!");
+    return false;
+  }
+  return true;
+};
+
+</script>
 </html>

@@ -27,6 +27,8 @@ router.get('/', async function (req, res, next) {
         res.render('index');
     }
 
+    console.log(categories);
+
     // index.ejs 전달
     res.render('index', {
         num_of_noti: num_of_noti,
@@ -70,7 +72,7 @@ router.post('/search', function (req, res, next) {
     const items = getAllSearchedItems(request_item);
 
     // search.ejs, 검색한 목록 프론트에 전달 (new list + old list)
-    res.render('search', { items: items });
+    res.render('search', { items: items, condition: request_item });
 
     // userinfo의 최종 검색 시간 갱신
     user_infos[user_id].last_query_date = getCurrentDatetimeString();
@@ -138,7 +140,7 @@ router.post('/remove', function (req, res, next) {
             break;
         }
     }
-	
+
     request('/userinfo', function (error, response, body) {
         if (error) {
             console.log(error);
