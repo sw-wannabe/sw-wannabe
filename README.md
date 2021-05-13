@@ -6,6 +6,10 @@ sudo useradd -m [사용자 이름]
 ```
 을 통해서 팀원별로 유저 추가
 ```
+sudo usermod -aG sudo [사용자 이름]
+```
+을 통해서 유저에 sudo 권한 부여
+```
 sudo passwd [사용자 이름]
 ```
 을 통해서 암호 설정
