@@ -21,7 +21,10 @@ cur.execute('''
         category TEXT,
         place TEXT,
         date DATE,
-        insert_time DATE
+        insert_time DATE,
+        color TEXT
+        img TEXT,
+        num INTEGER
     );
 ''')
 

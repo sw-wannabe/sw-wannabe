@@ -8,27 +8,25 @@ con = sqlite3.connect('./database.sqlite3')
 cur = con.cursor()
 
 
-def query_police():
-    base_url = 'http://apis.data.go.kr/1320000/LostGoodsInfoInqireService/getLostGoodsInfoAccToClAreaPd'
+def query_police(page, count):
+    base_url = 'http://apis.data.go.kr/1320000/LosfundInfoInqireService/getLosfundInfoAccToClAreaPd'
     service_key = 'hv2glkU2vkBs1Jez+lwGany2ShL5HiV/kzGHMKc3MwaYjFCfSPfNWsjMhJGJaPV4wKL8sPPa0qe0U/+c6Fc7bg=='
     query_params = '?' + urlencode({
         quote_plus('ServiceKey'): service_key,
-        quote_plus('START_YMD'): '20170801',
-        quote_plus('END_YMD'): '20171130',
-        quote_plus('PRDT_CL_CD_01'): 'PRA000',
-        quote_plus('PRDT_CL_CD_02'): 'PRA300',
-        quote_plus('LST_LCT_CD'): 'LCA000',
-        quote_plus('pageNo'): '1',
-        quote_plus('numOfRows'): '10'
+        quote_plus('pageNo'): page,
+        quote_plus('numOfRows'): count
     })
 
     map_police = {
         'id': 'atcId',
-        'place': 'lstPlace',
-        'name': 'lstPrdtNm',
-        'date': 'lstYmd',
+        'place': 'depPlace',
+        'name': 'fdPrdtNm',
+        'date': 'fdYmd',
         'category': 'prdtClNm',
-        'insert_time': 'insert_time'
+        'insert_time': 'insert_time',
+        'color': 'clrNm',
+        'img': 'fdFilePathImg',
+        'num': 'fdSn'  # 습득순번
     }
 
     columns = map_police.keys()
@@ -89,13 +87,21 @@ def query_seoul(start, end):
 
 
 # 데이터 몇 개 샘플로 가져옴
-query_police()
-query_seoul(0, 10)
+for i in range(0, 100):
+    query_police(i, 1000)
 
-SHOW_TEST = True
-if SHOW_TEST:
-    for row in cur.execute('SELECT * FROM losts_police').fetchall():
+# for i in range(42300, 274505+10000, 100):
+#     query_seoul(i, i+109)
+
+SHOW_POLICE = True
+if SHOW_POLICE:
+    result = cur.execute(
+        'SELECT DISTINCT id, place, date FROM losts_police WHERE date<TIME() ORDER BY date DESC LIMIT 30').fetchall()
+    for row in result:
         print(row)
 
-    for row in cur.execute('SELECT * FROM losts_seoul').fetchall():
+SHOW_SEOUL = True
+if SHOW_SEOUL:
+    result = cur.execute('SELECT COUNT(*) FROM losts_seoul').fetchall()
+    for row in result:
         print(row)
