@@ -27,7 +27,7 @@ router.get('/', async function (req, res, next) {
 	try {
 		res.render('index', { 
 			num_of_noti: await getNumOfNotiPerUser(user_id),
-			//categories: await getAllItemCategories()
+			categories: await getAllItemCategories()
 		});
 	} catch (error) {
 		console.log(error);
