@@ -22,7 +22,12 @@ setTimeout(async () => {
     list = await api.searchPoliceDB({ insertDateFrom: '2017-11-29' });
     console.log(list);
 
-    // 버스 노선별 정보 가져옴
-    list = api.searchBusRoute('강남01');
+    // 모든 카테고리 가져옴 (중복 제거)
+    list = await api.getPoliceDBCategories();
     console.log(list);
+
+    // 모든 카테고리 가져옴 (중복 제거)
+    list = await api.getSeoulDBCategories();
+    console.log(list);
+
 }, 100);

@@ -13,7 +13,7 @@ let routes;
     routes = routesString.split('\n');
 })();
 
-const getSearchFunction = tableName => async ({ dateFrom, dateTo, insertDateFrom }) => {
+const getSearchFunction = tableName => async ({ dateFrom, dateTo, insertDateFrom, location, name, category }) => {
     if (!db) {
         console.warn("DB is not prepared yet");
         return [];
@@ -34,6 +34,21 @@ const getSearchFunction = tableName => async ({ dateFrom, dateTo, insertDateFrom
     if (insertDateFrom) {
         params.push(insertDateFrom);
         query += 'AND insert_time >= ?';
+    }
+
+    if (location) {
+        params.push(location);
+        query += 'AND place = ?';
+    }
+
+    if (name) {
+        params.push(name);
+        query += 'AND name = ?';
+    }
+
+    if (category) {
+        params.push(category);
+        query += 'AND category = ?';
     }
 
     return db.all(query, params);
@@ -64,9 +79,21 @@ function searchBusRoute(routeName) {
 
     return ret;
 }
+const getAllCategories = tableName => async () => {
+    if (!db) {
+        console.warn("DB is not prepared yet");
+        return [];
+    }
+
+    const query = `SELECT DISTINCT CATEGORY FROM ${tableName} `;
+
+    return db.all(query);
+};
 
 module.exports = {
     searchPoliceDB: getSearchFunction('losts_police'),
     searchSeoulDB: getSearchFunction('losts_seoul'),
-    searchBusRoute
+    getPoliceDBCategories: getAllCategories('losts_police'),
+    getSeoulDBCategories: getAllCategories('losts_seoul'),
+    searchBusRoutel,
 };
