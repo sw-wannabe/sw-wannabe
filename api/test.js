@@ -19,7 +19,10 @@ setTimeout(async () => {
     console.log(list);
 
     // 데이터 크롤링 된 시간으로 필터링, 형식은 마찬가지.
-    list = await api.searchPoliceDB({ insertDateFrom: '2017-11-29-14:15:16' });
+    list = await api.searchPoliceDB({ insertDateFrom: '2017-11-29' });
     console.log(list);
 
+    // 버스 노선별 정보 가져옴
+    list = api.searchBusRoute('강남01');
+    console.log(list);
 }, 100);

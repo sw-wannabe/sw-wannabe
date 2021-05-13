@@ -1,13 +1,16 @@
 /**
  * 사용법은 test.js참조
  */
-
+const fs = require('fs').promises;
 const Database = require('sqlite-async');
 
 let db;
+let routes;
 (async () => {
     db = await Database.open('database.sqlite3');
     console.log("DB prepared");
+    let routesString = (await fs.readFile('routes.txt')).toString('utf-8');
+    routes = routesString.split('\n');
 })();
 
 const getSearchFunction = tableName => async ({ dateFrom, dateTo, insertDateFrom }) => {
@@ -29,14 +32,41 @@ const getSearchFunction = tableName => async ({ dateFrom, dateTo, insertDateFrom
     }
 
     if (insertDateFrom) {
-        params.push(dateTo);
+        params.push(insertDateFrom);
         query += 'AND insert_time >= ?';
     }
 
     return db.all(query, params);
 };
 
+function searchBusRoute(routeName) {
+    const re1 = /[0-9]{0,3}-[0-9]{0,4}-[0-9]{0,4}/;
+    const re2 = /[가-힣]([가-힣]| )+/;
+
+    routeName = routeName.replace(/ /g, '');
+    const ret = [];
+
+    function _filter(x) {
+        if (!x) return x;
+        return x[0];
+    }
+
+    for (let i = 0; i < routes.length; i++) {
+        if (routes[i].replace(/ /g, '').indexOf(routeName) >= 0) {
+            ;
+            info = routes[i].split('|')[1];
+            ret.push({
+                phone: _filter(info.match(re1)),
+                company: _filter(info.match(re2))
+            });
+        }
+    }
+
+    return ret;
+}
+
 module.exports = {
     searchPoliceDB: getSearchFunction('losts_police'),
     searchSeoulDB: getSearchFunction('losts_seoul'),
+    searchBusRoute
 };
