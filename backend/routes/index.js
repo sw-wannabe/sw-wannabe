@@ -25,7 +25,10 @@ router.get('/', async function (req, res, next) {
 	
 	// index.ejs 전달
 	try {
-		res.render('index', { num_of_noti: await getNumOfNotiPerUser(user_id) });
+		res.render('index', { 
+			num_of_noti: await getNumOfNotiPerUser(user_id),
+			//categories: await getAllItemCategories()
+		});
 	} catch (error) {
 		console.log(error);
 		res.render('index');
