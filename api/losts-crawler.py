@@ -96,11 +96,11 @@ for i in range(0, 100):
 SHOW_POLICE = True
 if SHOW_POLICE:
     result = cur.execute(
-        'SELECT DISTINCT id, place, date FROM losts_police WHERE date<TIME() ORDER BY date DESC LIMIT 30').fetchall()
+        'SELECT DISTINCT * FROM losts_police WHERE date<TIME() ORDER BY date DESC LIMIT 30').fetchall()
     for row in result:
         print(row)
 
-SHOW_SEOUL = True
+SHOW_SEOUL = False
 if SHOW_SEOUL:
     result = cur.execute('SELECT COUNT(*) FROM losts_seoul').fetchall()
     for row in result:
