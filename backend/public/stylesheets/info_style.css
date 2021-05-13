@@ -1,0 +1,134 @@
+* {
+  box-sizing: border-box;
+}
+
+li {
+  list-style: none;
+}
+
+.logo a {
+  color: #000;
+  text-decoration: none;
+}
+
+.logo a:hover {
+  color: #000;
+  text-decoration: none;
+}
+
+.logo a:visited {
+  color: #000;
+  text-decoration: none;
+}
+
+.logo {
+  padding-top: 5px;
+  padding-left: 40px;
+  font-size: 40px;
+}
+
+img {
+  margin-top: 50px;
+}
+
+#bus-number {
+  margin-left: 10px;
+  border-radius: 10px;
+  border: 1em;
+  padding: 10px;
+  width: 20%;
+  height: 20%;
+  box-shadow: rgba(149, 157, 165, 0.5) 0px 8px 24px;
+}
+
+#subway-number {
+  margin-left: 10px;
+  border-radius: 10px;
+  border: 1em;
+  padding: 10px;
+  width: 20%;
+  height: 20%;
+  box-shadow: rgba(149, 157, 165, 0.5) 0px 8px 24px;
+}
+
+#bus-number-button {
+  background-color: #ff9505;
+  color: #fff;
+  border: 0em;
+  border-radius: 10px;
+  margin-left: 10px;
+  padding: 10px;
+  width: 8%;
+  height: 20%;
+  font-family: NanumsquareR;
+  font-size: 15px;
+  box-shadow: rgba(149, 157, 165, 0.5) 0px 8px 24px;
+}
+
+#subway-number-button {
+  background-color: #ff9505;
+  color: #fff;
+  border: 0em;
+  border-radius: 10px;
+  margin-left: 10px;
+  padding: 10px;
+  width: 8%;
+  height: 20%;
+  font-family: NanumsquareR;
+  font-size: 15px;
+  box-shadow: rgba(149, 157, 165, 0.5) 0px 8px 24px;
+}
+
+.title {
+  margin: 0 auto;
+  width: 1192px;
+  height: 170px;
+  font-family: NanumSquareR;
+  font-size: 40px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: normal;
+  text-align: center;
+  color: #707070;
+}
+
+.title h2 {
+  font-size: 30px;
+}
+
+.list {
+  margin: 100px auto;
+  font-family: NanumSquareR;
+  font-size: 20px;
+  text-align: center;
+}
+
+.list > ul > li {
+  width: 900px;
+  height: auto;
+  margin: 150px auto;
+  padding: 20px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.list ul {
+  line-height: 2;
+}
+
+.list ol {
+  line-height: 1.5;
+}
+
+h3 {
+  width: 50%;
+  margin: 10px auto;
+  color: #fff;
+  font-size: 30px;
+  background: linear-gradient(90deg, #ff9505 0%, #f7d226 100%);
+}
+
+h5 {
+  font-size: 20px;
+}
