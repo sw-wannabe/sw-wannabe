@@ -1,3 +1,4 @@
+import sys
 import requests
 import bs4
 import sqlite3
@@ -82,6 +83,12 @@ def get_all(page):
             'date': date
         }
 
+        cur.execute('SELECT * FROM losts_police where id=?', [id])
+        exists = cur.fetchone()
+        if exists:
+            print("It looks like we crawled all the data; exit crawling.")
+            return False
+
         detail = get_detail(id)
         info.update(detail)
 
@@ -91,14 +98,23 @@ def get_all(page):
         for key in columns:
             values.append(info[key])
         cur.execute(query, values)
+    return True
 
 
-for i in range(470, 1000):
+s = 0
+e = 100
+if len(sys.argv) == 3:
+    s = int(sys.argv[1])
+    e = int(sys.argv[2])
+
+for i in range(s, e):
     print(f'Start crawling {i}')
-    get_all(i)
+    has_next = get_all(i)
     print(f'Finished crawling {i}')
     con.commit()
+    if s == 0 and not has_next:
+        break
 
-losts = cur.execute('SELECT * FROM losts_police').fetchall()
+losts = cur.execute('SELECT count(*) FROM losts_police').fetchall()
 for row in losts:
     print(row)
