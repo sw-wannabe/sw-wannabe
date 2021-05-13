@@ -24,6 +24,10 @@ body {
     font-family: "NanumSquare";
     src: url(font/NanumSquare.ttf);
 }
+@font-face {
+    font-family: "AppleSDGothicNeoM";
+    src: url(font/AppleSDGothicNeoM.ttf);
+}
 
 .box {
     width: 300px;
@@ -32,8 +36,8 @@ body {
     box-shadow: 0 2px 30px rgba(0,0,0, .2);
     /*background: lighten(240,244,195, 10%);*/
     position: relative;
-    left: 12%;
-    top: -10%;
+    left: 17%;
+    top: -9%;
     overflow: hidden;
     transform: translate3d(0, 0, 0);
     transition: transform .5s;
@@ -44,7 +48,7 @@ body {
     position: absolute;
     top: 3%;
     left: 50%;
-    background: #f7d226;
+    background: #2760e2;
     width: 500px;
     height: 500px;
     margin-left: -250px;
@@ -71,7 +75,7 @@ body {
     top: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to bottom, rgba(255, 149, 5, 1), rgba(247,210,38, 0) 80%, rgba(255,255,255, .5));
+    background: linear-gradient(to bottom, #2760e2, #2deede 70%, rgba(255,255,255, .5));
     z-index: 11;
     transform: translate3d(0, 0, 0);
 }
@@ -84,27 +88,27 @@ body {
 
 .title {
     position: absolute;
+    padding-top: 20px;
+    padding-left: 20px;
     /*left: 0;*/
     /*top: 0;*/
     width: 100%;
     z-index: 1;
     /*line-height: 300px;*/
-    text-align: center;
     transform: translate3d(0, 0, 0);
     color: white;
-    text-transform: uppercase;
-    font-family: Omni030, serif;
-    letter-spacing: .4em;
-    font-size: 35px;
+    /* text-transform: uppercase; */
+    font-family: Nanumsquare;
+    font-size: 50px;
     text-shadow: 0 1px 0 rgba(0,0,0, .1);
-    text-indent: .3em;
+    /* text-indent: .3em; */
 }
 
 .input-section{
     position: relative;
     width: 600px;
     /*height: 50px;*/
-    left: 25%;
+    left: 20%;
     bottom: 7%;
     float: bottom;
     text-align: center;
@@ -113,15 +117,17 @@ body {
 .search-button{
     width: 120px;
     height: 50px;
-    border: 2px solid #eeeeee;
+    padding-top: 3px;
+    margin-top: 20px;
+    border: 0em;
     border-radius: 20px;
     /*background-color: #00aaff;*/
-    background: linear-gradient(90deg, #ff9505 0%, #f7d226 100%);
+    background: linear-gradient(90deg, #2760e2 0%, #2deede 100%);
     text-align: center;
     font-family: Omni030;
     font-size: 25px;
     color: white;
-    box-shadow: 5px 5px 5px rgba(0,0,0, .2);
+    box-shadow: 0px 3px 6px rgba(0,0,0, .2);
 }
 
 .form-select{
@@ -131,23 +137,26 @@ body {
 
 .today{
     width: 400px;
-    font-family: Omni030;
+    font-family: Nanumsquare;
     font-size: 20px;
-    font-style: oblique;
+    /* font-style: oblique; */
     text-decoration: underline;
     text-align: center;
     text-underline-position: under;
-    color: rgba(51, 168, 86, 0.8);
+    color: gray;
 }
 
 .today:hover{
   cursor:pointer;
 }
 
+
 .input-width {
+  align-items: center;
     width: 600px;
     border-radius: 30px;
-    margin-bottom: 20px;
+    margin: 10px auto;
+    float: left;
 }
 
 #search-button-id{
@@ -167,13 +176,13 @@ body {
 }
 
 input::placeholder, .placeholder, option, select, input, #fadeinout{
-    font-family: Omni030;
+    font-family: Nanumsquare;
     font-size: 25px;
     text-align: center;
 }
 
 .select-css{
-  font-family: Omni030;
+  font-family: Nanumsquare;
   font-size: 25px;
   text-align: center;
   color: gray;
@@ -181,7 +190,7 @@ input::placeholder, .placeholder, option, select, input, #fadeinout{
 }
 
 .new-lost-alarm{
-  background-color:#ff4000;
+  background-color:#ff6767;
   width:50px;
   height:50px;
   margin-bottom: ;
@@ -219,6 +228,49 @@ input#new-lost-checkbox:checked + .new-lost-number {
   display: none;
 }
 
+#fadeinout{
+  color: white;
+}
+
+#datePicker {
+  width: 70%;
+  height: 50px;
+  margin: 0px 10px;
+  float: left;
+}
+
+#lost-location-id {
+  width: 70%;
+  height: 50px;
+  margin: 0px 10px;
+  float: left;
+}
+
+#lost-keyword {
+  width: 70%;
+  height: 50px;
+  margin: 0px 10px;
+  float: left;
+}
+
+
+#lost-option-id {
+  width: 70%;
+  height: 50px;
+  margin: 0px 10px;
+  float: left;
+}
+
+/* .label-inline{
+  display: inline;
+} */
+
+strong {
+  font-size: 40px;
+  float: left;
+  width: 10%;
+}
+
 @keyframes drift {
     from { transform: rotate(0deg); }
     from { transform: rotate(360deg); }
@@ -231,4 +283,10 @@ input#new-lost-checkbox:checked + .new-lost-number {
     .title{
         font-family: Omni020;
     }
+}
+
+#lost-datepicker,
+.table-condensed {
+  width: 250px;
+  height:250px;
 }

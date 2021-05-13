@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser');
 const api = require('../../api/index');
-const request = require('request');
+const request = require('sync-request');
 
 console.log(api);
 
@@ -27,6 +27,8 @@ router.get('/', async function (req, res, next) {
         res.render('index');
     }
 
+    console.log(categories);
+
     // index.ejs 전달
     res.render('index', {
         num_of_noti: num_of_noti,
@@ -44,9 +46,6 @@ router.get('/info', function (req, res, next) {
 router.get('/userinfo', function (req, res, next) {
     const user_id = getOrCreateUserIdFromCookie(req, res);
 
-    const current_user_info = user_infos[user_id];
-    console.log(current_user_info);
-
     // 유저가 등록한 items 보여주는 화면
     const items = user_infos[user_id].items;
     for (const item_idx in items) {
@@ -54,7 +53,7 @@ router.get('/userinfo', function (req, res, next) {
     }
 
     // userinfo.ejs 전달
-    res.render('userinfo', { items: items });
+    res.render('mypage', {items: items});
 });
 
 // post
@@ -65,12 +64,12 @@ router.post('/search', function (req, res, next) {
 
     // 분실 일시(date - datetime), 분실 장소(location - string), 분실 분류(category - string), 분실 이름(name - string) 넘어옴
     const request_item = getRequestItem(req);
-
+	
     // DB 검색
     const items = getAllSearchedItems(request_item);
 
     // search.ejs, 검색한 목록 프론트에 전달 (new list + old list)
-    res.render('search', { items: items });
+    res.render('search', { items: items, condition: request_item });
 
     // userinfo의 최종 검색 시간 갱신
     user_infos[user_id].last_query_date = getCurrentDatetimeString();
@@ -138,7 +137,7 @@ router.post('/remove', function (req, res, next) {
             break;
         }
     }
-	
+
     request('/userinfo', function (error, response, body) {
         if (error) {
             console.log(error);
@@ -260,6 +259,30 @@ async function getAllSearchedItemsByLastSearchTime(item, user_id) {
     return items;
 }
 
+async function getAllSearchedItemsFromElasticSearch(item) {
+    const res = request(
+		"POST", 
+		"http://3.35.135.122:9200/losts/_search/", 
+		{
+		body: JSON.stringify(getBodyForElasticSearch(item, "2017-01-01")),
+	});
+	
+	console.log(res);
+
+   //  return items;
+}
+
+async function getAllSearchedItemsByLastSearchTimeFromElasticSearch(item, user_id) {
+    const res = request.post({
+		url: "http://3.35.135.122:9200/losts/_search/",
+		body: getBodyForElasticSearch(item, user_infos[user_id].last_query_date),
+	});
+	
+	console.log(res);
+
+    // return items;
+}
+
 function getCurrentDatetimeString() {
     const today = new Date();
     const dd = String(today.getDate()).padStart(2, '0');
@@ -274,7 +297,7 @@ function getCurrentDatetimeString() {
     return datetime_string;
 }
 
-function getBodyForElasticSearch(item, user_id) {
+function getBodyForElasticSearch(item, last_query_date) {
     const body = {
         query: {
             bool: {
@@ -282,14 +305,14 @@ function getBodyForElasticSearch(item, user_id) {
                     {
                         range: {
                             date: {
-                                gte: 'item.date',
+                                gte: last_query_date,
                             },
                         },
                     },
                     {
                         range: {
                             insert_time: {
-                                gte: user_infos[user_id].last_query_date,
+                                gte: item.name,
                             },
                         },
                     },
@@ -297,6 +320,7 @@ function getBodyForElasticSearch(item, user_id) {
                         multi_match: {
                             query: item.name,
                             fields: ['name^3', 'category'],
+                            analyzer: 'synonym',
                         },
                     },
                     {
@@ -325,8 +349,13 @@ function getBodyForElasticSearch(item, user_id) {
                 },
             },
         ],
-        _source: ['name', 'category', 'place', 'date', 'insert_time'],
     };
 
     return body;
 }
+
+
+// getAllSearchedItemsFromElasticSearch({date: "2021-04-30",
+// 									 place: "서울시",
+// 									 category: "가방",
+// 									 name: "가방"}); ////////////////////////////////////////////////////////////////
