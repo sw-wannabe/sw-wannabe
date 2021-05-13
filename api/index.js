@@ -1,13 +1,16 @@
 /**
  * 사용법은 test.js참조
  */
+
 const fs = require('fs').promises;
+const path = require('path');
+
 const Database = require('sqlite-async');
 
 let db;
 let routes;
 (async () => {
-    db = await Database.open('database.sqlite3');
+    db = await Database.open(path.join(__dirname,'database.sqlite3'));
     console.log("DB prepared");
     let routesString = (await fs.readFile('routes.txt')).toString('utf-8');
     routes = routesString.split('\n');
