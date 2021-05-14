@@ -42,7 +42,7 @@
 
 1-1. **찾아봅시다.**
 
-<img src="readme_images/1-1.png" />
+<img src="https://user-images.githubusercontent.com/57023279/118201673-f4c97380-b492-11eb-9881-c3ad3fe3b6a0.png" width="65%" height="65%" />
     
 - 분실물과 관련된 정보를 상세히 입력하여 먼저 검색을 합니다.
 - 아, '루이까토즈'인지, '루이카토즈'인지 모르겠대도 괜찮습니다.
@@ -50,19 +50,17 @@
 
 1-2. **등록합시다.**
 
-<img src="readme_images/1-2.png" />
+<img src="readme_images/https://user-images.githubusercontent.com/57023279/118201976-c9935400-b493-11eb-9edc-f5cd24d6bab4.png" width="65%" height="65%" />
 
 - 내가 잃어버린 분실물이 있나 목록에서 천천히 살펴봅니다.
 - 분실물을 찾지 못했다면, 알림을 따라 '등록'합니다.
 
 1-3. **기다립시다.**
-
-<img src="readme_images/1-3.png" />
     
 - 전국의 모든 분실물 관련 정보와 연동되어 있습니다.
 - 최선을 다해 찾아본 후 이 사이트에 방문하여 결과를 확인하세요.
     
-<img src="1-3-1.png" />
+<img src="https://user-images.githubusercontent.com/57023279/118202046-f8112f00-b493-11eb-922b-2224565b7aaf.png" width="65%" height="65%" />
     
 - 만약 자신이 등록한 정보에 근접한 정보가 새로 등록될 경우 알림을 통해 알려줍니다.
 
@@ -70,14 +68,14 @@
 
 2-1. **오늘 잃어버렸다면?**
 
-<img src="readme_images/2-1.png" />
+<img src="https://user-images.githubusercontent.com/57023279/118202412-dfeddf80-b494-11eb-8e58-d26a28493bbf.jpeg" width="65%" height="65%" />
     
 - 만약 오늘 무언가를 잃어버렸다면 어떠한 전상망에도 없을 확률이 큽니다.
 - 이때 취해야할 가이드라인을 명확히 제시해드립니다.
 
 2-2. **예를 들어...**
 
-<img src="readme_images/2-2.png" />
+<img src="https://user-images.githubusercontent.com/57023279/118202436-eed49200-b494-11eb-871d-2c2b90b3ed8b.jpeg" width="65%" height="65%" />
     
 - 어떤 버스를 타고 내린 후 분실물이 발생한 것을 알았다면,
 - 어떤 곳에 연락을 취해야하거나, 어떤 조치를 취해야 하는지 알려드립니다.
