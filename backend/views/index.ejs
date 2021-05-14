@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
   <% include ./header %>
-  <%= categories %>
 </head>
 <body>
 
@@ -37,23 +36,16 @@
       <!-- 분실 위치 -->
       <div class="form-group input-width">
         <strong>🌏</strong>
-        <select class="form-select form-control" id="lost-location-id" name="location" id="exampleSelect1">
-          <option>서울특별시</option>
-          <option>경기도</option>
-          <option>인천특별시</option>
-          <option>대전광역시</option>
-        </select>
-
+        <input class="form-select form-control" id="lost-location-id" name="location" id="exampleSelect1"/>
       </div>
 
       <!-- 분실물 분류 -->
       <div class="form-group input-width">
         <strong>📚</strong>
         <select class="form-select form-control" id="lost-option-id" name="category" id="exampleSelect1">
-          <option>지갑</option>
-          <option>핸드폰</option>
-          <option>아이폰</option>
-          <option>가방</option>
+          <% categories.forEach(function(cate){%>
+            <option>cate</option>
+          <% })%>
         </select>
 
       </div>
@@ -121,12 +113,12 @@ $("#lost-keyword").focusout(function(){
 function openfunction(){
   if($("#fadeinout").text() == "💡"){
     $("#fadeinout").fadeOut("100", function(){
-      $("#fadeinout").text("새로 등록된 물품이 3개 있습니다.");
+      $("#fadeinout").text("새로 등록된 물품이 <%=num_of_noti%>개 있습니다.");
       $("#fadeinout").fadeIn(400);
     });
   }
   else{
-    $("#fadeinout").text("💡");
+    location.href="./userinfo";
   }
 }
 

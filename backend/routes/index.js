@@ -57,7 +57,13 @@ router.get('/userinfo', function (req, res, next) {
     const user_id = getOrCreateUserIdFromCookie(req, res);
 
     // 유저가 등록한 items 보여주는 화면
-    const items = user_infos[user_id].items;
+    var items = [];
+    if(user_id in user_infos && 'items' in user_infos[user_id]){
+      items = user_infos[user_id].items;
+    }
+    else {
+      items = [];
+    }
     for (const item_idx in items) {
         items[item_idx][num_of_noti] = getNumOfNotiPerItem(items[item_idx], user_id);
     }
@@ -278,8 +284,6 @@ async function getAllSearchedItemsFromElasticSearch(item) {
         });
 
     console.log(res);
-
-    //  return items;
 }
 
 async function getAllSearchedItemsByLastSearchTimeFromElasticSearch(item, user_id) {
@@ -289,7 +293,6 @@ async function getAllSearchedItemsByLastSearchTimeFromElasticSearch(item, user_i
     });
 
     console.log(res);
-
     // return items;
 }
 

@@ -39,11 +39,17 @@
             <strong>🔎</strong> <span class="font-size-temp"><%=condition.name%></span>
           </div>
         </div>
-        <div class="row" style="text-align:center; margin-bottom:20px">
-          <div class="col-lg-12">
-            찾으시는 물건이 없으신가요? 알림 추가하기!
+        <form method='post' action='./register'>
+          <input type='hidden' name='date' value='<%=condition.date%>'/>
+          <input type='hidden' name='location' value='<%=condition.location%>'/>
+          <input type='hidden' name='category' value='<%=condition.category%>'/>
+          <input type='hidden' name='name' value='<%=condition.name%>'/>
+          <div class="row" style="text-align:center">
+            <div class="col-6 offset-3" style="border-width:1px" onclick='this.form.submit()'>
+                찾으시는 물건이 없으신가요? 알림 추가하기!
+            </div>
           </div>
-        </div>
+        </form>
         <div class="row">
           <div class="col-lg-12">
             <table class='table table-striped'>
@@ -57,30 +63,18 @@
                   <th>전화번호</th>
                 </tr>
               </thead>
-              <tr class="table-danger">
-                <td>꼼데가르송 지갑</td>
-                <td>의류>지갑</td>
-                <td>왕십리역 2호선</td>
-                <td>2020-03-12</td>
-                <td>우리집경찰서</td>
-                <td>010-1234-1234</td>
-              </tr>
-              <tr>
-                <td>꼼데가르송 지갑</td>
-                <td>의류>지갑</td>
-                <td>왕십리역 2호선</td>
-                <td>2020-03-12</td>
-                <td>우리집경찰서</td>
-                <td>010-1234-1234</td>
-              </tr>
-              <tr>
-                <td>꼼데가르송 지갑</td>
-                <td>의류>지갑</td>
-                <td>왕십리역 2호선</td>
-                <td>2020-03-12</td>
-                <td>우리집경찰서</td>
-                <td>010-1234-1234</td>
-              </tr>
+              <%
+              if(!items){items = [];}
+              items.forEach(function(item){ %>
+                <tr class="<%=item.insert_time>last_query_date?'table-danger':''%>">
+                  <td><%=item.name%></td>
+                  <td><%=item.category%></td>
+                  <td><%=item.take_place%></td>
+                  <td><%=item.date%></td>
+                  <td><%=item.keep_place%></td>
+                  <td><%=item.contact%></td>
+                </tr>
+              <% }); %>
             </table>
           </div>
         </div>
