@@ -92,7 +92,7 @@
 
 2. **Elasticsearch를 이용한 더 효과적인 탐색**
 
-<img src="https://user-images.githubusercontent.com/57023279/118199258-a06fc500-b48d-11eb-813b-d03e16ddbb40.png" width="65%" height="65%" />
+<img src="https://user-images.githubusercontent.com/57023279/118202733-7e7a4080-b495-11eb-9e7e-6a658a830a0e.png" width="70%" height="70%" />
     
 - '헤지스'이든, '해지스'이든 상관 없습니다.
 - '카드'이든, '신용카드'이든 상관 없습니다.
