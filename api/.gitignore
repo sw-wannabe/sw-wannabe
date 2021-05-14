@@ -1,3 +1,5 @@
 routes.txt
 *.backup*
 *.sqlite3-journal
+dump.txt
+bulk.json
