@@ -50,7 +50,7 @@
 
 1-2. **등록합시다.**
 
-<img src="readme_images/https://user-images.githubusercontent.com/57023279/118201976-c9935400-b493-11eb-9edc-f5cd24d6bab4.png" width="65%" height="65%" />
+<img src="https://user-images.githubusercontent.com/57023279/118202614-41ae4980-b495-11eb-8680-af59a8602ac5.png" width="65%" height="65%" />
 
 - 내가 잃어버린 분실물이 있나 목록에서 천천히 살펴봅니다.
 - 분실물을 찾지 못했다면, 알림을 따라 '등록'합니다.
