@@ -57,13 +57,7 @@ router.get('/userinfo', function (req, res, next) {
     const user_id = getUser(req, res);
 
     // 유저가 등록한 items 보여주는 화면
-    var items = [];
-    if (user_id in user_infos && 'items' in user_infos[user_id]) {
-        items = user_infos[user_id].items;
-    }
-    else {
-        items = [];
-    }
+    var items = user_infos[user_id].items;
     for (const item_idx in items) {
         items[item_idx][num_of_noti] = getNumOfNotiPerItem(items[item_idx], user_id);
     }
@@ -111,13 +105,8 @@ router.post('/register', function (req, res, next) {
     console.log(user_infos[user_id]);
 
     // DB 검색
-    const items = getAllSearchedItems(request_item);
-
-    request('/userinfo', function (error, response, body) {
-        if (error) {
-            console.log(error);
-        }
-    });
+    //const items = getAllSearchedItems(request_item);
+    res.redirect('/userinfo');
 });
 
 // 아이템 삭제
@@ -142,11 +131,7 @@ router.post('/remove', function (req, res, next) {
         }
     }
 
-    request('/userinfo', function (error, response, body) {
-        if (error) {
-            console.log(error);
-        }
-    });
+    res.redirect('/userinfo');
 });
 
 module.exports = router;
