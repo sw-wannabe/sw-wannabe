@@ -30,7 +30,7 @@
       <div class="form-group input-width">
         <strong>🗓</strong>
         <!-- <input type="text" onfocus="(this.type='date')" name="lost-date" class="form-control" id="exampleInputPassword1" placeholder="분실 일자"> -->
-        <input type="text" id="datePicker" class="form-control" name="date" value="" placeholder="분실 일자">
+        <input type="text" id="datePicker" class="form-control" name="date" value="" placeholder="분실 일자" autocomplete="off">
       </div>
 
       <!-- 분실 위치 -->
@@ -94,12 +94,12 @@ $('#lost-location-id').editableSelect({effects: 'fade'});
 $('#lost-location-id').val("분실 위치");
 $("#lost-location-id").attr('class',"select-css form-control")
 $('#lost-location-id').focus(function(){
-  if($('#lost-location-id').val() == "분실물 위치")
+  if($('#lost-location-id').val() == "분실 위치")
   $('#lost-location-id').val("");
 });
 $('#lost-location-id').focusout(function(){
   if($('#lost-location-id').val() == "")
-  $('#lost-location-id').val("분실물 위치");
+  $('#lost-location-id').val("분실 위치");
 });
 
 $("#lost-keyword").focus(function(){
@@ -124,9 +124,7 @@ function openfunction(){
 
 
 $('#datePicker').datepicker({
-  format: "yyyy-mm-dd",
-  startDate: '-10d',
-  language : "ko"
+  format: "yyyy-mm-dd"
 })
 .on('changeDate', function(ev){
   $(this).datepicker('hide');
