@@ -10,43 +10,62 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-12">
-        <h1 style="margin-bottom:40px;cursor:pointer" class="main-title" onclick="location.href='./'">분실물 토탈 관리</h1>
+        <h1 style="margin-bottom:120px;cursor:pointer" class="main-title" onclick="location.href='./'">분실물 토탈 관리</h1>
       </div>
     </div>
     <div class="row">
       <div class="col-lg-12">
-        <h2 style="margin-bottom:200px;">내 알림 보기</h1>
+        <h2 style="margin-bottom:40px;">내 알림 보기</h2>
       </div>
     </div>
     <div class="row condition-row" style="padding:0 10%">
       <div class="col-lg-12"  style="text-align:center">
-        <% if(items.length == 0){%>내 알림이 없습니다! 검색기능을 이용해 주세요!<%}%>
+        <%
+        // items = [{'date':'2021-04-30','location':'왕십리역','category':'명품>가방','name':'나이키가방','num_of_noti':5},{'date':'2021-05-10','location':'왕십리역','category':'명품>지갑','name':'가죽 지갑','num_of_noti':3}]
+        if(items.length == 0){%>내 알림이 없습니다! 검색기능을 이용해 주세요!<%}%>
         <% items.forEach(function(item){%>
           <div class='row'>
-            <div class='col-10'>
-              <div class="row condition-row">
-                <div class="col-6 col-md-3">
+            <div class='col-9 col-lg-10' style="border:dotted;border-radius:20px">
+              <div class="row">
+                <div class="col-6" style="padding:7px">
                   🗓 <%=item.date%>
                 </div>
-                <div class="col-6 col-md-3">
+                <div class="col-6" style="padding:7px">
                   🌏 <%=item.location%>
                 </div>
-                <div class="col-6 col-md-3">
+              </div>
+              <div class="row">
+                <div class="col-6" style="padding:7px">
                   📚 <%=item.category%>
                 </div>
-                <div class="col-6 col-md-3">
+                <div class="col-6" style="padding:7px">
                   🔎 <%=item.name%>
                 </div>
               </div>
             </div>
-            <div class='col-2'>
-              <form action="./remove" method="post">
-                <input type='hidden' name='date' value='<%=item.date%>'/>
-                <input type='hidden' name='location' value='<%=item.location%>'/>
-                <input type='hidden' name='category' value='<%=item.category%>'/>
-                <input type='hidden' name='name' value='<%=item.name%>'/>
-                <input type='submit' class='btn btn-danger' value='삭제'/>
-              </form>
+            <div class='col-3 col-lg-2'>
+              <div class='row'>
+                <div class="col-12">
+                  <form action="./search" method="post">
+                    <input type='hidden' name='date' value='<%=item.date%>'/>
+                    <input type='hidden' name='location' value='<%=item.location%>'/>
+                    <input type='hidden' name='category' value='<%=item.category%>'/>
+                    <input type='hidden' name='name' value='<%=item.name%>'/>
+                    <input type='submit' style='width:100px; margin:2px' class='btn btn-outline-success' value='<%=item.num_of_noti%>개 확인'/>
+                  </form>
+                </div>
+              </div>
+              <div class='row'>
+                <div class="col-12">
+                  <form action="./remove" method="post">
+                    <input type='hidden' name='date' value='<%=item.date%>'/>
+                    <input type='hidden' name='location' value='<%=item.location%>'/>
+                    <input type='hidden' name='category' value='<%=item.category%>'/>
+                    <input type='hidden' name='name' value='<%=item.name%>'/>
+                    <input type='submit' style='width:100px; margin:2px' class='btn btn-outline-danger' value='삭제'/>
+                  </form>
+                </div>
+              </div>
             </div>
         <% }) %>
       </div>
