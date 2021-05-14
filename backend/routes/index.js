@@ -43,6 +43,16 @@ router.get('/info', function (req, res, next) {
     res.render('info', {});
 });
 
+router.post('/businfo', async function (req, res) {
+    let data = req.body;
+    console.log(data);
+    let { number } = data;
+    console.log(number);
+    let info = api.searchBusRoute(number);
+    console.log(info);
+    res.send({ info });
+});
+
 router.get('/userinfo', function (req, res, next) {
     const user_id = getOrCreateUserIdFromCookie(req, res);
 
@@ -53,7 +63,7 @@ router.get('/userinfo', function (req, res, next) {
     }
 
     // userinfo.ejs 전달
-    res.render('mypage', {items: items});
+    res.render('mypage', { items: items });
 });
 
 // post
@@ -64,7 +74,7 @@ router.post('/search', function (req, res, next) {
 
     // 분실 일시(date - datetime), 분실 장소(location - string), 분실 분류(category - string), 분실 이름(name - string) 넘어옴
     const request_item = getRequestItem(req);
-	
+
     // DB 검색
     const items = getAllSearchedItems(request_item);
 
@@ -261,24 +271,24 @@ async function getAllSearchedItemsByLastSearchTime(item, user_id) {
 
 async function getAllSearchedItemsFromElasticSearch(item) {
     const res = request(
-		"POST", 
-		"http://3.35.135.122:9200/losts/_search/", 
-		{
-		body: JSON.stringify(getBodyForElasticSearch(item, "2017-01-01")),
-	});
-	
-	console.log(res);
+        "POST",
+        "http://3.35.135.122:9200/losts/_search/",
+        {
+            body: JSON.stringify(getBodyForElasticSearch(item, "2017-01-01")),
+        });
 
-   //  return items;
+    console.log(res);
+
+    //  return items;
 }
 
 async function getAllSearchedItemsByLastSearchTimeFromElasticSearch(item, user_id) {
     const res = request.post({
-		url: "http://3.35.135.122:9200/losts/_search/",
-		body: getBodyForElasticSearch(item, user_infos[user_id].last_query_date),
-	});
-	
-	console.log(res);
+        url: "http://3.35.135.122:9200/losts/_search/",
+        body: getBodyForElasticSearch(item, user_infos[user_id].last_query_date),
+    });
+
+    console.log(res);
 
     // return items;
 }

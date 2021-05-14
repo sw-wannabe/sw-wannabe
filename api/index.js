@@ -11,9 +11,9 @@ const axios = require('axios');
 let db;
 let routes;
 (async () => {
-    db = await Database.open(path.join(__dirname,'database.sqlite3'));
+    db = await Database.open(path.join(__dirname, 'database.sqlite3'));
     console.log("DB prepared");
-    let routesString = (await fs.readFile('routes.txt')).toString('utf-8');
+    let routesString = (await fs.readFile(path.join(__dirname, 'routes.txt'))).toString('utf-8');
     routes = routesString.split('\n');
 })();
 

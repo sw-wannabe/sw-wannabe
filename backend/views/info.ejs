@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,6 +8,7 @@
     <title>오늘 물건을 잃어버렸다면?</title>
     <link rel="stylesheet" href="/stylesheets/info_style.css">
 </head>
+
 <body>
     <div class="logo">
         <h1>
@@ -14,19 +16,19 @@
         </h1>
     </div>
 
-  <div class='row'>
-    <div class='cal-lg-12'>
-    <div class="title">
-        <h1>
-            오늘 물건을 잃어버렸다면?
-        </h1>
-        <h2>
-            오늘 잃어버린 물건은 아직 등록되지 않았을 확률이 높아요.<br/>
-            다음과 같은 절차를 통해 빠르게 확인해 봅시다.
-        </h2>
+    <div class='row'>
+        <div class='cal-lg-12'>
+            <div class="title">
+                <h1>
+                    오늘 물건을 잃어버렸다면?
+                </h1>
+                <h2>
+                    오늘 잃어버린 물건은 아직 등록되지 않았을 확률이 높아요.<br />
+                    다음과 같은 절차를 통해 빠르게 확인해 봅시다.
+                </h2>
+            </div>
+        </div>
     </div>
-  </div>
-  </div>
 
     <div class="list">
         <ul>
@@ -37,14 +39,14 @@
                     <li>
                         <h5>분실 직후</h5>
                         <p>
-                            지역 내 버스 차고지로 문의합니다.<br/>
+                            지역 내 버스 차고지로 문의합니다.<br />
                             이 때 승하차시간, 버스번호, 이용 정류장 등을 알려주시는 것이 좋습니다.
                         </p>
                     </li>
                     <li>
-                        <form onsubmit="getBusNum(this)">
+                        <form id="bus-search-form">
                             <label for="bus-number">버스 번호 : </label>
-                            <input type="text" id="bus-number" />
+                            <input type="text" id="busNumber" />
                             <button id="bus-number-button" type="submit">
                                 검색
                             </button>
@@ -59,8 +61,8 @@
                     <li>
                         <h5>카드결제 한 경우</h5>
                         <p>
-                            영수증을 확인하면 차량번호, 사업자번호, 승하차 시간이 나와있어요.<br/>
-                            법인사업자라면 회사로, 개인사업자라면 개인택시조합 고객센터를 통해 기사님께 문의하면 됩니다.<br/>
+                            영수증을 확인하면 차량번호, 사업자번호, 승하차 시간이 나와있어요.<br />
+                            법인사업자라면 회사로, 개인사업자라면 개인택시조합 고객센터를 통해 기사님께 문의하면 됩니다.<br />
                             만약 영수증이 없다면 카드 회사로 전화하여 결제기록을 확인 후 <a href="tel:1644-1188">티머니 고객센터</a>를 통해 연락하세요.
                         </p>
                     </li>
@@ -79,7 +81,7 @@
                     <li>
                         <h5>분실직후</h5>
                         <p>
-                            기차역에 있는 역무실에 분실 사실을 알리세요.<br/>
+                            기차역에 있는 역무실에 분실 사실을 알리세요.<br />
                             이때 열차번호, 이용구간, 승차 호차 등을 알려주시는 것이 좋습니다.
                         </p>
                     </li>
@@ -92,8 +94,8 @@
                     <li>
                         <h5>분실직후</h5>
                         <p>
-                            하차한 역의 역무실에 분실 사실을 알리세요.<br/>
-                            이때 지하철 탑승 및 하차시간을 알 수 있다면<br/>
+                            하차한 역의 역무실에 분실 사실을 알리세요.<br />
+                            이때 지하철 탑승 및 하차시간을 알 수 있다면<br />
                             지하철 열차의 현재 위치를 추적하여 분실물을 찾을 수 있습니다.
                         </p>
                     </li>
@@ -113,19 +115,38 @@
 
 
 
-<script>
+    <script>
 
-function getBusNum(num) {
+        var form = document.getElementById("bus-search-form");
+        function handleForm(event) {
+            event.preventDefault();
+            fetch('/businfo', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ number: busNumber.value, 'test': 'value' })
+            })
+                .then(x => x.json())
+                .then(x => {
+                    let message = ''
+                    x.info.forEach(x => {
+                        message += x['company'] + ' : ' + x['phone'] + '\n'
+                    })
+                    alert(message)
+                })
+        }
+        form.addEventListener('submit', handleForm);
 
-}
+        function getSubwayNum(num) {
 
-function getSubwayNum(num) {
+        }
 
-}
-
-</script>
+    </script>
 
 
 
 </body>
+
 </html>
