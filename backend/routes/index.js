@@ -3,6 +3,7 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 const api = require('../../api/index');
 const request = require('sync-request');
+const axios = require('axios');
 
 console.log(api);
 
@@ -14,7 +15,7 @@ const user_infos = {};
 
 /* GET home page. */
 router.get('/', async function (req, res, next) {
-    const user_id = getOrCreateUserIdFromCookie(req, res);
+    const user_id = getUser(req, res);
 
     var categories;
     var num_of_noti;
@@ -25,21 +26,20 @@ router.get('/', async function (req, res, next) {
     } catch (error) {
         console.log(error);
         res.render('index');
+        return;
     }
 
     console.log(categories);
 
     // index.ejs 전달
     res.render('index', {
-        num_of_noti: num_of_noti,
-        categories: categories,
+        num_of_noti,
+        categories,
     });
 });
 
 router.get('/info', function (req, res, next) {
-    const user_id = getOrCreateUserIdFromCookie(req, res);
-
-    // info.ejs 전달
+    const user_id = getUser(req, res);
     res.render('info', {});
 });
 
@@ -54,15 +54,15 @@ router.post('/businfo', async function (req, res) {
 });
 
 router.get('/userinfo', function (req, res, next) {
-    const user_id = getOrCreateUserIdFromCookie(req, res);
+    const user_id = getUser(req, res);
 
     // 유저가 등록한 items 보여주는 화면
     var items = [];
-    if(user_id in user_infos && 'items' in user_infos[user_id]){
-      items = user_infos[user_id].items;
+    if (user_id in user_infos && 'items' in user_infos[user_id]) {
+        items = user_infos[user_id].items;
     }
     else {
-      items = [];
+        items = [];
     }
     for (const item_idx in items) {
         items[item_idx][num_of_noti] = getNumOfNotiPerItem(items[item_idx], user_id);
@@ -73,47 +73,35 @@ router.get('/userinfo', function (req, res, next) {
 });
 
 // post
-router.post('/search', function (req, res, next) {
-    console.log(req.body);
+router.post('/search', async function (req, res, next) {
 
-    const user_id = getOrCreateUserIdFromCookie(req, res);
+    const user_id = getUser(req, res);
 
     // 분실 일시(date - datetime), 분실 장소(location - string), 분실 분류(category - string), 분실 이름(name - string) 넘어옴
-    const request_item = getRequestItem(req);
+    const condition = getRequestItem(req);
 
     // DB 검색
-    const items = getAllSearchedItems(request_item);
+    const items = await getElasticSearch(condition);
 
-    // search.ejs, 검색한 목록 프론트에 전달 (new list + old list)
-    res.render('search', { items: items, condition: request_item });
-
-    // userinfo의 최종 검색 시간 갱신
-    user_infos[user_id].last_query_date = getCurrentDatetimeString();
-});
-
-router.post('/checknew', function (req, res, next) {
-    console.log(req.body);
-
-    const user_id = getOrCreateUserIdFromCookie(req, res);
-
-    // 분실 일시, 분실 장소, 분실 분류, 분실 이름 넘어옴
-    const request_item = getRequestItem(req);
-
-    // DB 검색 - 새로운 리스트 가져오기 -> 이전 최신 물품은 서버에 저장해두기
-    const new_items = getAllSearchedItemsByLastSearchTime(request_item, user_id);
-    const items = getAllSearchedItems(request_item);
-
-    // search.ejs, 검색한 목록 프론트에 전달 (new list + old list)
-    res.render('search', { new_items: new_items, items: items });
+    console.log(items);
 
     // userinfo의 최종 검색 시간 갱신
+    if (!(user_infos[user_id])) {
+
+    }
     user_infos[user_id].last_query_date = getCurrentDatetimeString();
+
+    const dict = { "items": items, "condition": condition, "last_query_date": user_infos[user_id].last_query_date };
+    console.log(dict);
+
+    // search.ejs, 검색한 목록 프론트에 전달 (new list + old list)
+    res.render('search', dict);
 });
 
 router.post('/register', function (req, res, next) {
     console.log(req.body);
 
-    const user_id = getOrCreateUserIdFromCookie(req, res);
+    const user_id = getUser(req, res);
 
     // 분실 일시, 분실 장소, 분실 분류, 분실 이름 넘어옴
     const request_item = getRequestItem(req);
@@ -136,7 +124,7 @@ router.post('/register', function (req, res, next) {
 router.post('/remove', function (req, res, next) {
     console.log(req.body);
 
-    const user_id = getOrCreateUserIdFromCookie(req, res);
+    const user_id = getUser(req, res);
 
     // 분실 일시, 분실 장소, 분실 분류, 분실 이름 넘어옴
     const request_item = getRequestItem(req);
@@ -169,9 +157,9 @@ function createUser(res) {
     });
 
     const new_user_info = getNewUserInfo();
-    user_infos[num_of_user] = new_user_info;
-
-    return num_of_user++;
+    const new_id = Math.random();
+    user_infos[new_id] = new_user_info;
+    return new_id;
 }
 
 function getNewUserInfo() {
@@ -189,9 +177,10 @@ function getRequestItem(req) {
     return request_item;
 }
 
-function getOrCreateUserIdFromCookie(req, res) {
+function getUser(req, res) {
+
     let user_id;
-    if (req.cookies == undefined || req.cookies.user_id == undefined) {
+    if ((!req.cookies) || (!req.cookies.user_id) || !(user_infos[req.cookies.user_id])) {
         // 쿠키 없는 경우
         // userid 생성
         user_id = createUser(res);
@@ -233,68 +222,14 @@ async function getAllItemCategories() {
     return (all_categories_list = [...new Set(all_categories_list)]);
 }
 
-async function getAllSearchedItems(item) {
-    const policeItems = await api.searchPoliceDB({
-        date: item.date,
-        location: item.location,
-        name: item.name,
-        category: item.category,
-    });
-
-    const seoulItems = await api.searchSeoulDB({
-        date: item.date,
-        location: item.location,
-        name: item.name,
-        category: item.category,
-    });
-
-    const items = policeItems.concat(seoulItems);
-
-    return items;
-}
-
-async function getAllSearchedItemsByLastSearchTime(item, user_id) {
-    const policeItems = await api.searchPoliceDB({
-        date: item.date,
-        location: item.location,
-        name: item.name,
-        category: item.category,
-        insertDateFrom: user_infos[user_id].last_query_date,
-    });
-
-    const seoulItems = await api.searchSeoulDB({
-        date: item.date,
-        location: item.location,
-        name: item.name,
-        category: item.category,
-        insertDateFrom: user_infos[user_id].last_query_date,
-    });
-
-    const items = policeItems.concat(seoulItems);
-
-    return items;
-}
-
-async function getAllSearchedItemsFromElasticSearch(item) {
-    const res = request(
-        "POST",
+async function getElasticSearch(item) {
+    const res = await axios.post(
         "http://3.35.135.122:9200/losts/_search/",
-        {
-            body: JSON.stringify(getBodyForElasticSearch(item, "2017-01-01")),
-        });
-
-    console.log(res);
+        getESQuery(item, "2017-01-01")
+    );
+    return res.data.hits.hits.map(x => x._source);
 }
 
-async function getAllSearchedItemsByLastSearchTimeFromElasticSearch(item, user_id) {
-    const res = request.post({
-        url: "http://3.35.135.122:9200/losts/_search/",
-        body: getBodyForElasticSearch(item, user_infos[user_id].last_query_date),
-    });
-
-    console.log(res);
-    // return items;
-}
 
 function getCurrentDatetimeString() {
     const today = new Date();
@@ -310,7 +245,7 @@ function getCurrentDatetimeString() {
     return datetime_string;
 }
 
-function getBodyForElasticSearch(item, last_query_date) {
+function getESQuery(item, last_query_date) {
     const body = {
         query: {
             bool: {
@@ -318,14 +253,14 @@ function getBodyForElasticSearch(item, last_query_date) {
                     {
                         range: {
                             date: {
-                                gte: last_query_date,
+                                gte: item.date,
                             },
                         },
                     },
                     {
                         range: {
                             insert_time: {
-                                gte: item.name,
+                                gte: last_query_date,
                             },
                         },
                     },
@@ -368,7 +303,13 @@ function getBodyForElasticSearch(item, last_query_date) {
 }
 
 
-// getAllSearchedItemsFromElasticSearch({date: "2021-04-30",
-// 									 place: "서울시",
-// 									 category: "가방",
-// 									 name: "가방"}); ////////////////////////////////////////////////////////////////
+// (async () => {
+//     let result = await getElasticSearch({
+//         date: "2021-04-30",
+//         location: "서울시",
+//         category: "가방",
+//         name: "가방"
+//     });
+//     console.log(result);
+
+// })();

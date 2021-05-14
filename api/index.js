@@ -42,17 +42,17 @@ const getSearchFunction = tableName => async ({ dateFrom, dateTo, insertDateFrom
 
     if (location) {
         params.push(location);
-        query += 'AND place = ?';
+        query += 'OR place = ?';
     }
 
     if (name) {
         params.push(name);
-        query += 'AND name = ?';
+        query += 'OR name = ?';
     }
 
     if (category) {
         params.push(category);
-        query += 'AND category = ?';
+        query += 'OR category = ?';
     }
 
     return db.all(query, params);
@@ -61,6 +61,7 @@ const getSearchFunction = tableName => async ({ dateFrom, dateTo, insertDateFrom
 function searchBusRoute(routeName) {
     const re1 = /[0-9]{0,3}-[0-9]{0,4}-[0-9]{0,4}/;
     const re2 = /[가-힣]([가-힣]| )+/;
+    
 
     routeName = routeName.replace(/ /g, '');
     const ret = [];

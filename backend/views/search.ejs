@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <% include ./header %>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <% include ./header %>
     <title>분실물 토탈 관리</title>
     <link rel="stylesheet" href="/stylesheets/search_style.css">
 </head>
+
 <body>
 
   <!-- 제목 물결 박스 -->
@@ -27,26 +29,34 @@
       <div class="col-lg-12">
         <div class="row condition-row" style="text-align:center; margin: 20 0px;">
           <div class="col-6 col-md-3">
-            <strong>🗓</strong> <span class="font-size-temp"><%=condition.date%></span>
+            <strong>🗓</strong> <span class="font-size-temp">
+              <%=condition.date%>
+            </span>
           </div>
           <div class="col-6 col-md-3">
-            <strong>🌏</strong><span class="font-size-temp"><%=condition.location%></span>
+            <strong>🌏</strong><span class="font-size-temp">
+              <%=condition.location%>
+            </span>
           </div>
           <div class="col-6 col-md-3">
-            <strong>📚</strong><span class="font-size-temp"><%=condition.category%></span>
+            <strong>📚</strong><span class="font-size-temp">
+              <%=condition.category%>
+            </span>
           </div>
           <div class="col-6 col-md-3">
-            <strong>🔎</strong> <span class="font-size-temp"><%=condition.name%></span>
+            <strong>🔎</strong> <span class="font-size-temp">
+              <%=condition.name%>
+            </span>
           </div>
         </div>
         <form method='post' action='./register'>
-          <input type='hidden' name='date' value='<%=condition.date%>'/>
-          <input type='hidden' name='location' value='<%=condition.location%>'/>
-          <input type='hidden' name='category' value='<%=condition.category%>'/>
-          <input type='hidden' name='name' value='<%=condition.name%>'/>
+          <input type='hidden' name='date' value='<%=condition.date%>' />
+          <input type='hidden' name='location' value='<%=condition.location%>' />
+          <input type='hidden' name='category' value='<%=condition.category%>' />
+          <input type='hidden' name='name' value='<%=condition.name%>' />
           <div class="row" style="text-align:center">
             <div class="col-6 offset-3" style="border-width:1px" onclick='this.form.submit()'>
-                찾으시는 물건이 없으신가요? 알림 추가하기!
+              찾으시는 물건이 없으신가요? 알림 추가하기!
             </div>
           </div>
         </form>
@@ -63,18 +73,28 @@
                   <th>전화번호</th>
                 </tr>
               </thead>
-              <%
-              if(!items){items = [];}
-              items.forEach(function(item){ %>
-                <tr class="<%=item.insert_time>last_query_date?'table-danger':''%>">
-                  <td><%=item.name%></td>
-                  <td><%=item.category%></td>
-                  <td><%=item.take_place%></td>
-                  <td><%=item.date%></td>
-                  <td><%=item.keep_place%></td>
-                  <td><%=item.contact%></td>
+              <% for(var i=0; i<items.length;i++){ %>
+                <tr class="<%=items[i].insert_time>last_query_date?'table-danger':''%>">
+                  <td>
+                    <%=items[i].name%>
+                  </td>
+                  <td>
+                    <%=items[i].category%>
+                  </td>
+                  <td>
+                    <%=items[i].take_place%>
+                  </td>
+                  <td>
+                    <%=items[i].date%>
+                  </td>
+                  <td>
+                    <%=items[i].keep_place%>
+                  </td>
+                  <td>
+                    <%=items[i].contact%>
+                  </td>
                 </tr>
-              <% }); %>
+                <%} %>
             </table>
           </div>
         </div>
@@ -83,4 +103,5 @@
   </div>
 
 </body>
+
 </html>
